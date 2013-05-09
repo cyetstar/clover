@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cyetstar.clover.repository.mybatis.MovieMapper">
+
+	<select id="find" parameterType="long" resultMap="movieResultMap">
+		select movie.*
+		from tb_movie movie
+		where movie.id = #{value}
+	</select>
+
+
+	<resultMap id="movieResultMap" type="movie">
+		<id property="id" column="id" />
+		<result property="doubanId" column="douban_id" />
+		<result property="title" column="title" />
+		<result property="originalTitle" column="original_title" />
+		<result property="doubanUrl" column="douban_url" />
+		<result property="subtype" column="subtype" />
+		<result property="year" column="year" />
+		<result property="summary" column="summary" />
+		<result property="image" column="summary" />
+	</resultMap>
+
+</mapper> 
