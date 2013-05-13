@@ -2,19 +2,36 @@ package org.cyetstar.clover.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.Where;
 import org.joda.time.DateTime;
 
-public class Movie extends IdEntity<Long> {
+import com.google.common.collect.Lists;
+
+@Entity
+@Table(name = "tb_movie")
+public class Movie extends IdEntity {
+
+	public final static String IMDB_PREFIX = "tt";
 
 	private String doubanId;
+
+	private String imdb;
 
 	private String title;
 
 	private String originalTitle;
 
-	private List<MovieAka> akas;
-
-	private String doubanUrl;
+	private List<MovieAka> akas = Lists.newArrayList();
 
 	private String subtype;
 
@@ -22,21 +39,23 @@ public class Movie extends IdEntity<Long> {
 
 	private String summary;
 
-	private List<Celebrity> directors;
+	private List<MovieCredit> directors = Lists.newArrayList();
 
-	private List<Celebrity> casts;
+	private List<MovieCredit> casts = Lists.newArrayList();
 
-	private List<Celebrity> writers;
+	private List<MovieCredit> writers = Lists.newArrayList();
 
 	private String language;
 
 	private String duration;
 
-	private List<MovieGenre> genres;
+	private List<MovieGenre> genres = Lists.newArrayList();
 
 	private String country;
 
-	private Rating rating;
+	private float rating;
+
+	private int numRaters;
 
 	private String image;
 
@@ -44,12 +63,28 @@ public class Movie extends IdEntity<Long> {
 
 	private DateTime updatedAt;
 
+	public Movie() {
+
+	}
+
+	public Movie(Long id) {
+		this.id = id;
+	}
+
 	public String getDoubanId() {
 		return doubanId;
 	}
 
 	public void setDoubanId(String doubanId) {
 		this.doubanId = doubanId;
+	}
+
+	public String getImdb() {
+		return imdb;
+	}
+
+	public void setImdb(String imdb) {
+		this.imdb = imdb;
 	}
 
 	public String getTitle() {
@@ -68,20 +103,14 @@ public class Movie extends IdEntity<Long> {
 		this.originalTitle = originalTitle;
 	}
 
+	@OneToMany(mappedBy = "movie", orphanRemoval = true, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE, CascadeType.REMOVE })
 	public List<MovieAka> getAkas() {
 		return akas;
 	}
 
 	public void setAkas(List<MovieAka> akas) {
 		this.akas = akas;
-	}
-
-	public String getDoubanUrl() {
-		return doubanUrl;
-	}
-
-	public void setDoubanUrl(String doubanUrl) {
-		this.doubanUrl = doubanUrl;
 	}
 
 	public String getSubtype() {
@@ -108,27 +137,33 @@ public class Movie extends IdEntity<Long> {
 		this.summary = summary;
 	}
 
-	public List<Celebrity> getDirectors() {
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+	@Where(clause = "role='director'")
+	public List<MovieCredit> getDirectors() {
 		return directors;
 	}
 
-	public void setDirectors(List<Celebrity> directors) {
+	public void setDirectors(List<MovieCredit> directors) {
 		this.directors = directors;
 	}
 
-	public List<Celebrity> getCasts() {
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+	@Where(clause = "role='cast'")
+	public List<MovieCredit> getCasts() {
 		return casts;
 	}
 
-	public void setCasts(List<Celebrity> casts) {
+	public void setCasts(List<MovieCredit> casts) {
 		this.casts = casts;
 	}
 
-	public List<Celebrity> getWriters() {
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+	@Where(clause = "role='writer'")
+	public List<MovieCredit> getWriters() {
 		return writers;
 	}
 
-	public void setWriters(List<Celebrity> writers) {
+	public void setWriters(List<MovieCredit> writers) {
 		this.writers = writers;
 	}
 
@@ -148,6 +183,8 @@ public class Movie extends IdEntity<Long> {
 		this.duration = duration;
 	}
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tb_movie_movie_genre", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "genre_id") })
 	public List<MovieGenre> getGenres() {
 		return genres;
 	}
@@ -164,12 +201,20 @@ public class Movie extends IdEntity<Long> {
 		this.country = country;
 	}
 
-	public Rating getRating() {
+	public float getRating() {
 		return rating;
 	}
 
-	public void setRating(Rating rating) {
+	public void setRating(float rating) {
 		this.rating = rating;
+	}
+
+	public int getNumRaters() {
+		return numRaters;
+	}
+
+	public void setNumRaters(int numRaters) {
+		this.numRaters = numRaters;
 	}
 
 	public String getImage() {
@@ -180,6 +225,7 @@ public class Movie extends IdEntity<Long> {
 		this.image = image;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -188,12 +234,24 @@ public class Movie extends IdEntity<Long> {
 		this.createdAt = createdAt;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
 	public void setUpdatedAt(DateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public void addAka(MovieAka aka) {
+		aka.setMovie(this);
+		this.akas.add(aka);
+	}
+
+	public void addAllAka(List<MovieAka> akas) {
+		for (MovieAka aka : akas) {
+			addAka(aka);
+		}
 	}
 
 }

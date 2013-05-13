@@ -45,7 +45,7 @@
 			<property name="password" value="${jdbc.password}" />
 		</bean>
 
-		<jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
+		<jdbc:initialize-database data-source="dataSource" ignore-failures="NONE">
 			<jdbc:script location="classpath:sql/h2/schema.sql" />
 			<jdbc:script location="classpath:data/import-data.sql" encoding="UTF-8" />
 		</jdbc:initialize-database>

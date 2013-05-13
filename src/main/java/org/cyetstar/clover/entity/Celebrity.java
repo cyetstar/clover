@@ -1,8 +1,17 @@
 package org.cyetstar.clover.entity;
 
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-public class Celebrity extends IdEntity<Long> {
+@Entity
+@Table(name = "tb_celebrity")
+public class Celebrity extends IdEntity {
 
 	private String doubanId;
 
@@ -16,9 +25,19 @@ public class Celebrity extends IdEntity<Long> {
 
 	private String avatar;
 
+	private List<MovieCredit> movies;
+
 	private DateTime createdAt;
 
 	private DateTime updatedAt;
+
+	public Celebrity() {
+
+	}
+
+	public Celebrity(Long id) {
+		this.id = id;
+	}
 
 	public String getDoubanId() {
 		return doubanId;
@@ -68,6 +87,16 @@ public class Celebrity extends IdEntity<Long> {
 		this.avatar = avatar;
 	}
 
+	@OneToMany
+	public List<MovieCredit> getMovies() {
+		return movies;
+	}
+
+	public void setMovies(List<MovieCredit> movies) {
+		this.movies = movies;
+	}
+
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -76,6 +105,7 @@ public class Celebrity extends IdEntity<Long> {
 		this.createdAt = createdAt;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}

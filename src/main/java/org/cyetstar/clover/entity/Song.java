@@ -1,8 +1,16 @@
 package org.cyetstar.clover.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-public class Song extends IdEntity<Long> {
+@Entity
+@Table(name = "tb_song")
+public class Song extends IdEntity {
 
 	private String xiamiId;
 
@@ -40,6 +48,8 @@ public class Song extends IdEntity<Long> {
 		this.songName = songName;
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "ablum_id")
 	public Ablum getAblum() {
 		return ablum;
 	}
@@ -48,6 +58,7 @@ public class Song extends IdEntity<Long> {
 		this.ablum = ablum;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -56,6 +67,7 @@ public class Song extends IdEntity<Long> {
 		this.createdAt = createdAt;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}

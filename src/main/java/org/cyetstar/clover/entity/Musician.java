@@ -2,11 +2,20 @@ package org.cyetstar.clover.entity;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.google.common.collect.Lists;
 
-public class Musician extends IdEntity<Long> {
+@Entity
+@Table(name = "tb_musician")
+public class Musician extends IdEntity {
 
 	private String name;
 
@@ -54,6 +63,8 @@ public class Musician extends IdEntity<Long> {
 		this.avatar = avatar;
 	}
 
+	@ManyToMany
+	@JoinTable(name = "tb_ablum_musician", joinColumns = { @JoinColumn(name = "musician_id") }, inverseJoinColumns = { @JoinColumn(name = "ablum_id") })
 	public List<Ablum> getAblums() {
 		return ablums;
 	}
@@ -62,6 +73,7 @@ public class Musician extends IdEntity<Long> {
 		this.ablums = ablums;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -70,6 +82,7 @@ public class Musician extends IdEntity<Long> {
 		this.createdAt = createdAt;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}

@@ -2,11 +2,22 @@ package org.cyetstar.clover.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.google.common.collect.Lists;
 
-public class Ablum extends IdEntity<Long> {
+@Entity
+@Table(name = "tb_ablum")
+public class Ablum extends IdEntity {
 
 	private String doubanId;
 
@@ -14,7 +25,7 @@ public class Ablum extends IdEntity<Long> {
 
 	private String title;
 
-	private Musician singer;
+	private List<Musician> singers = Lists.newArrayList();
 
 	private String altTitle;
 
@@ -26,7 +37,9 @@ public class Ablum extends IdEntity<Long> {
 
 	private String version;
 
-	private Rating rating;
+	private float rating;
+
+	private int numRaters;
 
 	private String image;
 
@@ -60,12 +73,14 @@ public class Ablum extends IdEntity<Long> {
 		this.title = title;
 	}
 
-	public Musician getSinger() {
-		return singer;
+	@ManyToMany
+	@JoinTable(name = "tb_ablum_musician", joinColumns = { @JoinColumn(name = "ablum_id") }, inverseJoinColumns = { @JoinColumn(name = "musician_id") })
+	public List<Musician> getSingers() {
+		return singers;
 	}
 
-	public void setSinger(Musician singer) {
-		this.singer = singer;
+	public void setSingers(List<Musician> singers) {
+		this.singers = singers;
 	}
 
 	public String getAltTitle() {
@@ -108,12 +123,20 @@ public class Ablum extends IdEntity<Long> {
 		this.version = version;
 	}
 
-	public Rating getRating() {
+	public float getRating() {
 		return rating;
 	}
 
-	public void setRating(Rating rating) {
+	public void setRating(float rating) {
 		this.rating = rating;
+	}
+
+	public int getNumRaters() {
+		return numRaters;
+	}
+
+	public void setNumRaters(int numRaters) {
+		this.numRaters = numRaters;
 	}
 
 	public String getImage() {
@@ -124,6 +147,7 @@ public class Ablum extends IdEntity<Long> {
 		this.image = image;
 	}
 
+	@OneToMany(mappedBy = "ablum", cascade = CascadeType.REMOVE)
 	public List<Song> getSongs() {
 		return songs;
 	}
@@ -132,6 +156,7 @@ public class Ablum extends IdEntity<Long> {
 		this.songs = songs;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -140,6 +165,7 @@ public class Ablum extends IdEntity<Long> {
 		this.createdAt = createdAt;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}

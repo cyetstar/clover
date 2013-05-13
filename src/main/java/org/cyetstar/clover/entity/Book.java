@@ -1,8 +1,14 @@
 package org.cyetstar.clover.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-public class Book extends IdEntity<Long> {
+@Entity
+@Table(name = "tb_book")
+public class Book extends IdEntity {
 
 	private String doubanId;
 
@@ -30,7 +36,9 @@ public class Book extends IdEntity<Long> {
 
 	private String summary;
 
-	private Rating rating;
+	private float rating;
+
+	private int numRaters;
 
 	private String image;
 
@@ -142,12 +150,20 @@ public class Book extends IdEntity<Long> {
 		this.summary = summary;
 	}
 
-	public Rating getRating() {
+	public float getRating() {
 		return rating;
 	}
 
-	public void setRating(Rating rating) {
+	public void setRating(float rating) {
 		this.rating = rating;
+	}
+
+	public int getNumRaters() {
+		return numRaters;
+	}
+
+	public void setNumRaters(int numRaters) {
+		this.numRaters = numRaters;
 	}
 
 	public String getImage() {
@@ -158,6 +174,7 @@ public class Book extends IdEntity<Long> {
 		this.image = image;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -166,6 +183,7 @@ public class Book extends IdEntity<Long> {
 		this.createdAt = createdAt;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}

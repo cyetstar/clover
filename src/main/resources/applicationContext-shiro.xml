@@ -7,13 +7,14 @@
 
 	<!-- Shiro's main business-tier object for web-enabled applications -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="cloverDatabaseRealm" />
+		<property name="realm">
+			<bean class="org.apache.shiro.realm.text.PropertiesRealm"/>
+		</property>
+		<property name="cacheManager">
+			<bean class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
+		</property>
 	</bean>
 
-	<!-- 項目自定义的Realm, 所有userService依赖的dao都需要用depends-on声明 -->
-	<bean id="cloverDatabaseRealm" class="org.cyetstar.clover.service.CloverDatabaseRealm">
-		<property name="userMapper" ref="userMapper" />
-	</bean>
 
 	<!-- Shiro Filter -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">

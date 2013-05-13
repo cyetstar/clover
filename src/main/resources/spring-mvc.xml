@@ -40,5 +40,8 @@
 	
 	<!-- 定义无需Controller的url<->view直接映射 -->
 
-
+	<mvc:view-controller path="/login" view-name="login"/>
+	
+	<mvc:view-controller path="/" view-name="redirect:/movies"/>
+	
 </beans>

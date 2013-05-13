@@ -1,16 +1,22 @@
 package org.cyetstar.clover.entity;
 
-import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
-public class IdEntity<T extends Serializable> {
+@MappedSuperclass
+public class IdEntity {
 
-	protected T id;
+	protected Long id;
 
-	public T getId() {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(T id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -1,10 +1,18 @@
 package org.cyetstar.clover.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-public class ComicBook extends IdEntity<Long> {
+@Entity
+@Table(name = "tb_comic_book")
+public class ComicBook extends IdEntity {
 
-	private String bookVol;
+	private int bookVolume;
 
 	private String scanner;
 
@@ -16,12 +24,12 @@ public class ComicBook extends IdEntity<Long> {
 
 	private DateTime updatedAt;
 
-	public String getBookVol() {
-		return bookVol;
+	public int getBookVolume() {
+		return bookVolume;
 	}
 
-	public void setBookVol(String bookVol) {
-		this.bookVol = bookVol;
+	public void setBookVolume(int bookVolume) {
+		this.bookVolume = bookVolume;
 	}
 
 	public String getScanner() {
@@ -40,6 +48,8 @@ public class ComicBook extends IdEntity<Long> {
 		this.image = image;
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "comic_id")
 	public Comic getComic() {
 		return comic;
 	}
@@ -48,6 +58,7 @@ public class ComicBook extends IdEntity<Long> {
 		this.comic = comic;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -56,6 +67,7 @@ public class ComicBook extends IdEntity<Long> {
 		this.createdAt = createdAt;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}

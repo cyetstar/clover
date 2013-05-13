@@ -2,11 +2,19 @@ package org.cyetstar.clover.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.google.common.collect.Lists;
 
-public class Comic extends IdEntity<Long> {
+@Entity
+@Table(name = "tb_comic")
+public class Comic extends IdEntity {
 
 	private String title;
 
@@ -24,7 +32,7 @@ public class Comic extends IdEntity<Long> {
 
 	private boolean end;
 
-	private int bookTotal;
+	private int totalVolume;
 
 	private String image;
 
@@ -98,12 +106,12 @@ public class Comic extends IdEntity<Long> {
 		this.end = end;
 	}
 
-	public int getBookTotal() {
-		return bookTotal;
+	public int getTotalVolume() {
+		return totalVolume;
 	}
 
-	public void setBookTotal(int bookTotal) {
-		this.bookTotal = bookTotal;
+	public void setTotalVolume(int totalVolume) {
+		this.totalVolume = totalVolume;
 	}
 
 	public String getImage() {
@@ -114,6 +122,7 @@ public class Comic extends IdEntity<Long> {
 		this.image = image;
 	}
 
+	@OneToMany(mappedBy = "comic", cascade = CascadeType.REMOVE)
 	public List<ComicBook> getBooks() {
 		return books;
 	}
@@ -122,6 +131,7 @@ public class Comic extends IdEntity<Long> {
 		this.books = books;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -130,6 +140,7 @@ public class Comic extends IdEntity<Long> {
 		this.createdAt = createdAt;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}
