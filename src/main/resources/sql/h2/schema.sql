@@ -5,28 +5,16 @@ drop table if exists tb_celebrity;
 drop table if exists tb_comic;
 drop table if exists tb_comic_book;
 drop table if exists tb_movie;
-drop table if exists tb_movie_credit;
-drop table if exists tb_movie_movie_genre;
 drop table if exists tb_movie_aka;
+drop table if exists tb_movie_country;
+drop table if exists tb_movie_credit;
 drop table if exists tb_movie_genre;
+drop table if exists tb_movie_language
+drop table if exists tb_movie_movie_country;
+drop table if exists tb_movie_movie_language;
+drop table if exists tb_movie_movie_genre;
 drop table if exists tb_musician;
 drop table if exists tb_song;
-
-/********************/
-drop table if exists tb_child;
-drop table if exists tb_parent;
-create table tb_child(
-	id                  bigint not null auto_increment,
-	name				varchar(10),
-	parent_id			int not null,
-	primary key (id)
-);
-create table tb_parent(
-	id                  bigint not null auto_increment,
-	name				varchar(10),
-	primary key (id)
-);
-/**************/
 
 create table tb_ablum(
 	id                  bigint not null auto_increment,
@@ -125,14 +113,25 @@ create table tb_movie(
 	subtype				varchar(10) not null,
 	year				varchar(4) not null,
 	summary				varchar(2000),
-	language			varchar(100),
 	duration			varchar(100),
-	country				varchar(100),
 	rating				real default 0.0 not null,
 	num_raters			int default 0 not null,
 	image				varchar(100),
 	created_at			timestamp default 0 not null,
 	updated_at			timestamp,
+	primary key (id)
+);
+
+create table tb_movie_aka(
+	id                  bigint not null auto_increment,
+	movie_id			bigint not null,
+	title				varchar(200),
+	primary key (id)
+);
+
+create table tb_movie_country(
+	id                  bigint not null auto_increment,
+	country				varchar(10) not null,
 	primary key (id)
 );
 
@@ -144,23 +143,34 @@ create table tb_movie_credit(
 	primary key (id)
 );
 
+create table tb_movie_genre(
+	id                  bigint not null auto_increment,
+	genre				varchar(10) not null,
+	primary key (id)
+);
+
+create table tb_movie_language(
+	id                  bigint not null auto_increment,
+	language			varchar(10) not null,
+	primary key (id)
+);
+
+create table tb_movie_movie_country(
+	movie_id            bigint not null,
+	country_id      	bigint not null,
+	primary key (movie_id, country_id)
+);
+
 create table tb_movie_movie_genre(
 	movie_id            bigint not null,
 	genre_id      		bigint not null,
 	primary key (movie_id, genre_id)
 );
 
-create table tb_movie_aka(
-	id                  bigint not null auto_increment,
-	movie_id			bigint not null,
-	title				varchar(200),
-	primary key (id)
-);
-
-create table tb_movie_genre(
-	id                  bigint not null auto_increment,
-	genre				varchar(10) not null,
-	primary key (id)
+create table tb_movie_movie_language(
+	movie_id            bigint not null,
+	language_id      	bigint not null,
+	primary key (movie_id, language_id)
 );
 
 create table tb_musician(

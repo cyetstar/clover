@@ -12,8 +12,8 @@ import javax.persistence.Table;
 import com.google.common.collect.Lists;
 
 @Entity
-@Table(name = "tb_movie_genre")
-public class MovieGenre extends IdEntity {
+@Table(name = "tb_movie_country")
+public class MovieCountry extends IdEntity {
 
 	private String value;
 
@@ -28,7 +28,7 @@ public class MovieGenre extends IdEntity {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tb_movie_movie_genre", joinColumns = { @JoinColumn(name = "genre_id") }, inverseJoinColumns = { @JoinColumn(name = "movie_id") })
+	@JoinTable(name = "tb_movie_movie_country", joinColumns = { @JoinColumn(name = "country_id") }, inverseJoinColumns = { @JoinColumn(name = "movie_id") })
 	public List<Movie> getMovies() {
 		return movies;
 	}

@@ -1,6 +1,7 @@
 package org.cyetstar.clover.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -15,7 +16,7 @@ public class MovieCredit extends IdEntity {
 
 	private Celebrity celebrity;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "movie_id")
 	public Movie getMovie() {
 		return movie;
@@ -33,7 +34,7 @@ public class MovieCredit extends IdEntity {
 		this.role = role;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "celebrity_id")
 	public Celebrity getCelebrity() {
 		return celebrity;

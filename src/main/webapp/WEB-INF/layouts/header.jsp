@@ -4,7 +4,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <div id="header" class="navbar navbar-inverse navbar-static-top">
-  <div class="navbar-inner ">
+  <div id="header-nav" class="navbar-inner ">
     <ul class="nav pull-left">
       <li><a href="${ctx}/">电影</a></li>
       <li><a href="${ctx}/admin/">读书</a></li>

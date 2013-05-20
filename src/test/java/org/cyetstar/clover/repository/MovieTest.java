@@ -1,5 +1,7 @@
 package org.cyetstar.clover.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -8,15 +10,24 @@ import org.cyetstar.clover.entity.Celebrity;
 import org.cyetstar.clover.entity.Movie;
 import org.cyetstar.clover.entity.MovieCredit;
 import org.cyetstar.clover.entity.MovieGenre;
+import org.cyetstar.code.domain.Clause;
+import org.cyetstar.code.domain.Fetch;
+import org.cyetstar.code.spring.SpecificationCreater;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-@ActiveProfiles("test")
+import com.google.common.collect.Lists;
+
+@ActiveProfiles("development")
 @ContextConfiguration(locations = { "/applicationContext.xml" })
 @TransactionConfiguration(defaultRollback = false)
 public class MovieTest extends AbstractTransactionalJUnit4SpringContextTests {
@@ -34,13 +45,29 @@ public class MovieTest extends AbstractTransactionalJUnit4SpringContextTests {
 	MovieCreditDao creditDao;
 
 	@Test
+	public void find1() {
+		//		Clause clause1 = new Clause(ClauseItem.like("akas.title", "abc")).add(
+		//				new ClauseItem("year", Operator.EQ, "1980")).disjunction();
+		Clause clause1 = Clause.instance().like("akas.title", "abc").eq("year", "1980").disjunction();
+		Clause clause2 = Clause.instance().eq("imdb", "tt2817211").gt("rating", 9.0).disjunction();
+
+		//		new Clause(new ClauseItem("imdb", Operator.EQ, "tt2817211")).add(new ClauseItem("rating", Operator.GT, "9.0"))
+		//				.disjunction();
+		List<Clause> clauses = Lists.newArrayList(clause1, clause2);
+		Specification<Movie> spec = SpecificationCreater.searchWith(new Fetch("directors.celebrity"), new Fetch(
+				"casts.celebrity"), new Fetch("akas"));
+		dao.findAll(spec, new PageRequest(0, 10, new Sort(Direction.ASC, "createdAt")));
+
+	}
+
+	//@Test
 	public void create() {
 		Movie movie = MovieData.newMovie("abc");
 		movie.addAka(MovieData.newMovieAka("tt"));
 		dao.save(movie);
 	}
 
-	@Test
+	//@Test
 	public void updateByFind() {
 		Movie movie = dao.findOne(1L);
 		movie.addAka(MovieData.newMovieAka("c3"));
@@ -51,7 +78,7 @@ public class MovieTest extends AbstractTransactionalJUnit4SpringContextTests {
 		dao.save(movie);
 	}
 
-	@Test
+	//@Test
 	public void updateBySet() {
 		Movie movie = new Movie(1L);
 		movie.addAka(MovieData.newMovieAka("c3"));
@@ -62,7 +89,7 @@ public class MovieTest extends AbstractTransactionalJUnit4SpringContextTests {
 		dao.save(movie);
 	}
 
-	@Test
+	//@Test
 	public void setGenre() {
 		MovieGenre genre = genreDao.findOne(1L);
 		Movie movie = dao.findOne(1L);
@@ -70,7 +97,7 @@ public class MovieTest extends AbstractTransactionalJUnit4SpringContextTests {
 		dao.save(movie);
 	}
 
-	@Test
+	//@Test
 	public void genreSave() {
 		MovieGenre genre = genreDao.findOne(2L);
 		Movie movie = dao.findOne(1L);
@@ -78,7 +105,7 @@ public class MovieTest extends AbstractTransactionalJUnit4SpringContextTests {
 		genreDao.save(genre);
 	}
 
-	@Test
+	//@Test
 	public void creditSave() {
 		MovieCredit credit = new MovieCredit();
 		credit.setCelebrity(new Celebrity(1L));

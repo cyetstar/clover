@@ -3,6 +3,7 @@
 	<excludes>
 		<pattern>/static/*</pattern>
 		<pattern>/api/*</pattern>
+		
 	</excludes>
 	
 	<decorator name="default" page="defaultLayout.jsp">

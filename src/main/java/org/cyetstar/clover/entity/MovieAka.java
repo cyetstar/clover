@@ -11,7 +11,7 @@ public class MovieAka extends IdEntity {
 
 	private Movie movie;
 
-	private String title;
+	private String value;
 
 	@ManyToOne
 	@JoinColumn(name = "movie_id")
@@ -23,12 +23,12 @@ public class MovieAka extends IdEntity {
 		this.movie = movie;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getValue() {
+		return value;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 }

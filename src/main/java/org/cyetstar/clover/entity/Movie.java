@@ -1,6 +1,7 @@
 package org.cyetstar.clover.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,12 +11,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.apache.shiro.util.StringUtils;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 import org.joda.time.DateTime;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 @Entity
 @Table(name = "tb_movie")
@@ -31,7 +35,7 @@ public class Movie extends IdEntity {
 
 	private String originalTitle;
 
-	private List<MovieAka> akas = Lists.newArrayList();
+	private Set<MovieAka> akas = Sets.newLinkedHashSet();
 
 	private String subtype;
 
@@ -39,19 +43,19 @@ public class Movie extends IdEntity {
 
 	private String summary;
 
-	private List<MovieCredit> directors = Lists.newArrayList();
+	private Set<MovieCredit> directors = Sets.newLinkedHashSet();
 
-	private List<MovieCredit> casts = Lists.newArrayList();
+	private Set<MovieCredit> casts = Sets.newLinkedHashSet();
 
-	private List<MovieCredit> writers = Lists.newArrayList();
+	private Set<MovieCredit> writers = Sets.newLinkedHashSet();
 
-	private String language;
+	private Set<MovieGenre> genres = Sets.newLinkedHashSet();
+
+	private Set<MovieLanguage> languages = Sets.newLinkedHashSet();
+
+	private Set<MovieCountry> countries = Sets.newLinkedHashSet();
 
 	private String duration;
-
-	private List<MovieGenre> genres = Lists.newArrayList();
-
-	private String country;
 
 	private float rating;
 
@@ -105,11 +109,11 @@ public class Movie extends IdEntity {
 
 	@OneToMany(mappedBy = "movie", orphanRemoval = true, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
 			CascadeType.MERGE, CascadeType.REMOVE })
-	public List<MovieAka> getAkas() {
+	public Set<MovieAka> getAkas() {
 		return akas;
 	}
 
-	public void setAkas(List<MovieAka> akas) {
+	public void setAkas(Set<MovieAka> akas) {
 		this.akas = akas;
 	}
 
@@ -139,40 +143,32 @@ public class Movie extends IdEntity {
 
 	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
 	@Where(clause = "role='director'")
-	public List<MovieCredit> getDirectors() {
+	public Set<MovieCredit> getDirectors() {
 		return directors;
 	}
 
-	public void setDirectors(List<MovieCredit> directors) {
+	public void setDirectors(Set<MovieCredit> directors) {
 		this.directors = directors;
 	}
 
 	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
 	@Where(clause = "role='cast'")
-	public List<MovieCredit> getCasts() {
+	public Set<MovieCredit> getCasts() {
 		return casts;
 	}
 
-	public void setCasts(List<MovieCredit> casts) {
+	public void setCasts(Set<MovieCredit> casts) {
 		this.casts = casts;
 	}
 
 	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
 	@Where(clause = "role='writer'")
-	public List<MovieCredit> getWriters() {
+	public Set<MovieCredit> getWriters() {
 		return writers;
 	}
 
-	public void setWriters(List<MovieCredit> writers) {
+	public void setWriters(Set<MovieCredit> writers) {
 		this.writers = writers;
-	}
-
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
 	}
 
 	public String getDuration() {
@@ -183,22 +179,34 @@ public class Movie extends IdEntity {
 		this.duration = duration;
 	}
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_movie_movie_genre", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "genre_id") })
-	public List<MovieGenre> getGenres() {
+	public Set<MovieGenre> getGenres() {
 		return genres;
 	}
 
-	public void setGenres(List<MovieGenre> genres) {
+	public void setGenres(Set<MovieGenre> genres) {
 		this.genres = genres;
 	}
 
-	public String getCountry() {
-		return country;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "tb_movie_movie_language", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "language_id") })
+	public Set<MovieLanguage> getLanguages() {
+		return languages;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setLanguages(Set<MovieLanguage> languages) {
+		this.languages = languages;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "tb_movie_movie_country", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "country_id") })
+	public Set<MovieCountry> getCountries() {
+		return countries;
+	}
+
+	public void setCountries(Set<MovieCountry> countries) {
+		this.countries = countries;
 	}
 
 	public float getRating() {
@@ -254,4 +262,8 @@ public class Movie extends IdEntity {
 		}
 	}
 
+	@Transient
+	public List<String> getDurations() {
+		return this.duration != null ? Lists.newArrayList(StringUtils.split(this.duration)) : null;
+	}
 }

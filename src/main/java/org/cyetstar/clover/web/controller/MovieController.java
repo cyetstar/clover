@@ -1,5 +1,7 @@
 package org.cyetstar.clover.web.controller;
 
+import java.util.Map;
+
 import org.cyetstar.clover.entity.Movie;
 import org.cyetstar.clover.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.common.collect.Maps;
+
 @Controller
 @RequestMapping("/movies")
 public class MovieController {
@@ -20,11 +24,15 @@ public class MovieController {
 	MovieService movieService;
 
 	@RequestMapping
-	public String list(@RequestParam(required = false) String key, @RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "created_at_asc") String sort,
-			Model model) {
-		Page<Movie> list = movieService.findMovie(key, page, size, sort);
-		model.addAttribute("list", list);
+	public String list(@RequestParam(required = false) String keywords,
+			@RequestParam(value = "no", defaultValue = "1") int pageNum,
+			@RequestParam(value = "sz", defaultValue = "10") int pageSize,
+			@RequestParam(defaultValue = "createdAt:desc") String sort, Model model) {
+		Page<Movie> page = movieService.findMovie(keywords, pageNum - 1, pageSize, sort);
+		model.addAttribute("page", page);
+		Map<String, String> map = Maps.newHashMap();
+		map.put("keywords", keywords);
+		model.addAttribute("params", map);
 		return "movies/list";
 	}
 
