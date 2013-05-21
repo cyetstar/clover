@@ -54,5 +54,9 @@
 
 	<!-- JSR303 Validator定义 -->
  	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+ 	
+ 	<bean id="doubanRequest" class="org.cyetstar.clover.utils.DoubanRequest">
+ 		<constructor-arg index="0" value="${douban.apikey}" />
+ 	</bean>
 
 </beans>

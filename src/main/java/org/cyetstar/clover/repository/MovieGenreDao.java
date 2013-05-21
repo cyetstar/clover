@@ -5,4 +5,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface MovieGenreDao extends PagingAndSortingRepository<MovieGenre, Long> {
 
+	MovieGenre findByValue(String value);
 }

@@ -25,7 +25,7 @@ public class JsonNodeParser {
 	private final static String MOVIE_SUBTYPE_KEY = "subtype";
 	private final static String MOVIE_YEAR_KEY = "year";
 	private final static String MOVIE_NUM_RATER_KEY = "ratings_count";
-	private final static String MOVIE_DURATION_KEY = "genres";//"durations";
+	private final static String MOVIE_DURATION_KEY = "durations";
 	private final static String MOVIE_SUMMARY_KEY = "summary";
 
 	private final static String MOVIE_AKA_KEY = "aka";
@@ -41,7 +41,7 @@ public class JsonNodeParser {
 	private final static String CELEBRITY_NAME_KEY = "name";
 
 	private final static String RATING_KEY = "rating";
-	private final static String RATING_VAL_KEY = "value";
+	private final static String RATING_VAL_KEY = "average";
 
 	public static Movie toMovie(JsonNode root) {
 		Movie movie = new Movie();

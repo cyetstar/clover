@@ -45,6 +45,13 @@ public class MovieTest extends AbstractTransactionalJUnit4SpringContextTests {
 	MovieCreditDao creditDao;
 
 	@Test
+	public void copy() {
+
+		Movie old = dao.findByDoubanId("1291560");
+
+	}
+
+	//@Test
 	public void find1() {
 		//		Clause clause1 = new Clause(ClauseItem.like("akas.title", "abc")).add(
 		//				new ClauseItem("year", Operator.EQ, "1980")).disjunction();
@@ -63,14 +70,12 @@ public class MovieTest extends AbstractTransactionalJUnit4SpringContextTests {
 	//@Test
 	public void create() {
 		Movie movie = MovieData.newMovie("abc");
-		movie.addAka(MovieData.newMovieAka("tt"));
 		dao.save(movie);
 	}
 
 	//@Test
 	public void updateByFind() {
 		Movie movie = dao.findOne(1L);
-		movie.addAka(MovieData.newMovieAka("c3"));
 		movie.setTitle("ccc");
 		movie.setYear("1980");
 		movie.setSubtype("movie");
@@ -81,7 +86,6 @@ public class MovieTest extends AbstractTransactionalJUnit4SpringContextTests {
 	//@Test
 	public void updateBySet() {
 		Movie movie = new Movie(1L);
-		movie.addAka(MovieData.newMovieAka("c3"));
 		movie.setTitle("ccc");
 		movie.setYear("1980");
 		movie.setSubtype("movie");

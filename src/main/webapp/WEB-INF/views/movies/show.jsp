@@ -46,7 +46,7 @@
               <c:if test="${!empty movie.genres}">
                 <dt>类型:</dt>
                 <dd>
-                  <c:forEach items="${movie.genres}" var="item" varStatus="status">${item.genre}
+                  <c:forEach items="${movie.genres}" var="item" varStatus="status">${item.value}
                   <c:if test="${!status.last}">/</c:if>
                   </c:forEach>
                 </dd>
@@ -54,7 +54,7 @@
               <c:if test="${!empty movie.countries}">
                 <dt>制片国家/地区:</dt>
                 <dd>
-                  <c:forEach items="${movie.countries}" var="item" varStatus="status">${item.country}
+                  <c:forEach items="${movie.countries}" var="item" varStatus="status">${item.value}
                 <c:if test="${!status.last}">/</c:if>
                   </c:forEach>
                 </dd>
@@ -62,7 +62,7 @@
               <c:if test="${!empty movie.languages}">
                 <dt>语言:</dt>
                 <dd>
-                  <c:forEach items="${movie.languages}" var="item" varStatus="status">${item.language}
+                  <c:forEach items="${movie.languages}" var="item" varStatus="status">${item.value}
                 <c:if test="${!status.last}">/</c:if>
                   </c:forEach>
                 </dd>
@@ -78,7 +78,7 @@
               <c:if test="${!empty movie.akas}">
                 <dt>又名:</dt>
                 <dd>
-                  <c:forEach items="${movie.akas}" var="item" varStatus="status">${item.title}
+                  <c:forEach items="${movie.akas}" var="item" varStatus="status">${item.value}
                   <c:if test="${!status.last}">/</c:if>
                   </c:forEach>
                 </dd>

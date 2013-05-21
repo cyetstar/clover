@@ -141,7 +141,8 @@ public class Movie extends IdEntity {
 		this.summary = summary;
 	}
 
-	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE })
 	@Where(clause = "role='director'")
 	public Set<MovieCredit> getDirectors() {
 		return directors;
@@ -151,7 +152,8 @@ public class Movie extends IdEntity {
 		this.directors = directors;
 	}
 
-	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE })
 	@Where(clause = "role='cast'")
 	public Set<MovieCredit> getCasts() {
 		return casts;
@@ -161,7 +163,8 @@ public class Movie extends IdEntity {
 		this.casts = casts;
 	}
 
-	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE })
 	@Where(clause = "role='writer'")
 	public Set<MovieCredit> getWriters() {
 		return writers;
@@ -249,17 +252,6 @@ public class Movie extends IdEntity {
 
 	public void setUpdatedAt(DateTime updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public void addAka(MovieAka aka) {
-		aka.setMovie(this);
-		this.akas.add(aka);
-	}
-
-	public void addAllAka(List<MovieAka> akas) {
-		for (MovieAka aka : akas) {
-			addAka(aka);
-		}
 	}
 
 	@Transient

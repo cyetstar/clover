@@ -5,4 +5,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface CelebrityDao extends PagingAndSortingRepository<Celebrity, Long> {
 
+	Celebrity findByDoubanId(String doubanId);
+
 }
