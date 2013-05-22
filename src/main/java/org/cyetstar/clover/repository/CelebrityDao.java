@@ -1,9 +1,8 @@
 package org.cyetstar.clover.repository;
 
 import org.cyetstar.clover.entity.Celebrity;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface CelebrityDao extends PagingAndSortingRepository<Celebrity, Long> {
+public interface CelebrityDao extends JpaSpecRepository<Celebrity, Long> {
 
 	Celebrity findByDoubanId(String doubanId);
 

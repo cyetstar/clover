@@ -1,5 +1,6 @@
 package org.cyetstar.clover.entity;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -252,6 +253,19 @@ public class Movie extends IdEntity {
 
 	public void setUpdatedAt(DateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public void addAka(MovieAka aka) {
+		if (aka != null) {
+			aka.setMovie(this);
+			this.akas.add(aka);
+		}
+	}
+
+	public void addAllAka(Collection<MovieAka> akas) {
+		for (MovieAka aka : akas) {
+			this.addAka(aka);
+		}
 	}
 
 	@Transient

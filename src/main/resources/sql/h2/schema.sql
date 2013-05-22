@@ -9,7 +9,7 @@ drop table if exists tb_movie_aka;
 drop table if exists tb_movie_country;
 drop table if exists tb_movie_credit;
 drop table if exists tb_movie_genre;
-drop table if exists tb_movie_language
+drop table if exists tb_movie_language;
 drop table if exists tb_movie_movie_country;
 drop table if exists tb_movie_movie_language;
 drop table if exists tb_movie_movie_genre;
@@ -125,13 +125,13 @@ create table tb_movie(
 create table tb_movie_aka(
 	id                  bigint not null auto_increment,
 	movie_id			bigint not null,
-	title				varchar(200),
+	value				varchar(200),
 	primary key (id)
 );
 
 create table tb_movie_country(
 	id                  bigint not null auto_increment,
-	country				varchar(10) not null,
+	value				varchar(10) not null,
 	primary key (id)
 );
 
@@ -145,13 +145,13 @@ create table tb_movie_credit(
 
 create table tb_movie_genre(
 	id                  bigint not null auto_increment,
-	genre				varchar(10) not null,
+	value				varchar(10) not null,
 	primary key (id)
 );
 
 create table tb_movie_language(
 	id                  bigint not null auto_increment,
-	language			varchar(10) not null,
+	value				varchar(10) not null,
 	primary key (id)
 );
 

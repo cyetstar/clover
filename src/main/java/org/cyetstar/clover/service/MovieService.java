@@ -1,7 +1,11 @@
 package org.cyetstar.clover.service;
 
+import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.Validate;
 import org.cyetstar.clover.entity.Celebrity;
 import org.cyetstar.clover.entity.Movie;
 import org.cyetstar.clover.entity.MovieAka;
@@ -10,6 +14,7 @@ import org.cyetstar.clover.entity.MovieCredit;
 import org.cyetstar.clover.entity.MovieGenre;
 import org.cyetstar.clover.entity.MovieLanguage;
 import org.cyetstar.clover.repository.CelebrityDao;
+import org.cyetstar.clover.repository.JpaSpecRepository;
 import org.cyetstar.clover.repository.MovieAkaDao;
 import org.cyetstar.clover.repository.MovieCountryDao;
 import org.cyetstar.clover.repository.MovieCreditDao;
@@ -23,12 +28,14 @@ import org.cyetstar.code.domain.Fetch;
 import org.cyetstar.code.spring.DataDomainHelper;
 import org.cyetstar.code.spring.SpecificationCreater;
 import org.cyetstar.utils.Strings;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Sets;
@@ -60,6 +67,7 @@ public class MovieService {
 	@Autowired
 	DoubanRequest doubanRequest;
 
+	@Transactional(readOnly = true)
 	public Page<Movie> findMovie(String key, int pageNum, int pageSize, String sort) {
 		Pageable pageable = new PageRequest(pageNum, pageSize, DataDomainHelper.parseSort(sort.split(",")));
 		if (key != null) {
@@ -79,6 +87,7 @@ public class MovieService {
 		}
 	}
 
+	@Transactional(readOnly = true)
 	public Movie findMovie(Long id) {
 		Specification<Movie> spec = SpecificationCreater.searchByWith(Clause.instance().eq("id", id), new Fetch(
 				"genres"), new Fetch("akas"), new Fetch("countries"), new Fetch("languages"), new Fetch(
@@ -101,193 +110,156 @@ public class MovieService {
 	}
 
 	private Movie mergeMovie(Movie movie) {
-		//判断doubanId是否存在
 		String doubanId = movie.getDoubanId();
-		Set<MovieAka> akas = movie.getAkas();
-		Set<MovieCredit> directors = movie.getDirectors();
-		Set<MovieCredit> casts = movie.getCasts();
-		Set<MovieCredit> writers = movie.getWriters();
-		Set<MovieCountry> countries = movie.getCountries();
-		Set<MovieGenre> genres = movie.getGenres();
-		Set<MovieLanguage> languages = movie.getLanguages();
-
-		Movie oldMovie = movieDao.findByDoubanId(doubanId);
-		if (oldMovie != null) {
-			copyMovieProperties(movie, oldMovie);
-
-			setDifferenceAka(movie, akas);
-			saveDifferenceCountry(movie, countries);
-			saveDifferenceGenre(movie, genres);
-			saveDifferenceLanguage(movie, languages);
-
-			saveDifferenceDirector(movie, directors);
-			saveDifferenceCast(movie, casts);
-			saveDifferenceWriter(movie, writers);
-
+		Movie persistentMovie = movieDao.findByDoubanId(doubanId);
+		if (persistentMovie != null) {
+			mergeMovieProperties(movie, persistentMovie);
 		} else {
-			for (MovieAka aka : akas) {
-				aka.setMovie(movie);
-			}
-			for (MovieCountry country : countries) {
-				movie.getCountries().add(mergeMovieCountry(country));
-			}
-			for (MovieGenre genre : genres) {
-				movie.getGenres().add(mergeMovieGenre(genre));
-			}
-			for (MovieLanguage language : languages) {
-				movie.getLanguages().add(mergeMovieLanguage(language));
-			}
-
-			for (MovieCredit credit : directors) {
-				mergeMovieCredit(credit);
-				credit.setMovie(movie);
-			}
-			movie.getDirectors().addAll(directors);
-
-			for (MovieCredit credit : casts) {
-				mergeMovieCredit(credit);
-				credit.setMovie(movie);
-			}
-			movie.getCasts().addAll(casts);
-
-			for (MovieCredit credit : writers) {
-				mergeMovieCredit(credit);
-				credit.setMovie(movie);
-			}
-			movie.getWriters().addAll(writers);
-
+			saveMovieProperties(movie);
 		}
 		return movieDao.save(movie);
 	}
 
-	private void saveDifferenceDirector(Movie movie, Set<MovieCredit> directors) {
-		for (MovieCredit credit : directors) {
-			try {
-				mergeMovieCredit(credit);
-			} catch (NullPointerException e) {
-				continue;
-			}
-			credit.setMovie(movie);
+	///////////////////////////
+
+	private void saveMovieProperties(Movie movie) {
+		movie.setCreatedAt(DateTime.now());
+
+		for (MovieAka aka : movie.getAkas()) {
+			aka.setMovie(movie);
 		}
-		Set<MovieCredit> difference = Sets.difference(directors, movie.getDirectors());
+		mergeSimpleEntitySet(movie.getCountries(), movieCountryDao);
+		mergeSimpleEntitySet(movie.getGenres(), movieGenreDao);
+		mergeSimpleEntitySet(movie.getLanguages(), movieLanguageDao);
+
+		mergeMovieCreditSet(movie.getDirectors(), movie);
+		mergeMovieCreditSet(movie.getCasts(), movie);
+		mergeMovieCreditSet(movie.getWriters(), movie);
+	}
+
+	private void mergeMovieProperties(Movie movie, Movie persistentMovie) {
+		//simply property copy from persist
+		movie.setId(persistentMovie.getId());
+		movie.setImdb(persistentMovie.getImdb());
+		movie.setImage(persistentMovie.getImage());
+		movie.setCreatedAt(persistentMovie.getCreatedAt());
+		movie.setUpdatedAt(DateTime.now());
+
+		setDifferenceAka(movie, persistentMovie);
+		saveDifferenceCountry(movie, persistentMovie);
+		saveDifferenceGenre(movie, persistentMovie);
+		saveDifferenceLanguage(movie, persistentMovie);
+
+		saveDifferenceDirector(movie, persistentMovie);
+		saveDifferenceCast(movie, persistentMovie);
+		saveDifferenceWriter(movie, persistentMovie);
+	}
+
+	private void setDifferenceAka(Movie movie, Movie persistentMovie) {
+		Set<MovieAka> difference = Sets.difference(movie.getAkas(), persistentMovie.getAkas());
+		movie.setAkas(persistentMovie.getAkas());
+		movie.addAllAka(difference);
+	}
+
+	private void saveDifferenceCountry(Movie movie, Movie persistentMovie) {
+		Set<MovieCountry> difference = saveDifferenceEntitySet(movie.getCountries(), persistentMovie.getCountries(),
+				movieCountryDao);
+		movie.setCountries(persistentMovie.getCountries());
+		movie.getCountries().addAll(difference);
+	}
+
+	private void saveDifferenceGenre(Movie movie, Movie persistentMovie) {
+		Set<MovieGenre> difference = saveDifferenceEntitySet(movie.getGenres(), persistentMovie.getGenres(),
+				movieGenreDao);
+		movie.setGenres(persistentMovie.getGenres());
+		movie.getGenres().addAll(difference);
+	}
+
+	private void saveDifferenceLanguage(Movie movie, Movie persistentMovie) {
+		Set<MovieLanguage> difference = saveDifferenceEntitySet(movie.getLanguages(), persistentMovie.getLanguages(),
+				movieLanguageDao);
+		movie.setLanguages(persistentMovie.getLanguages());
+		movie.getLanguages().addAll(difference);
+	}
+
+	private void saveDifferenceDirector(Movie movie, Movie persistentMovie) {
+		Set<MovieCredit> directors = movie.getDirectors();
+		mergeMovieCreditSet(directors, movie);
+		Set<MovieCredit> difference = Sets.difference(directors, persistentMovie.getDirectors());
+		movie.setDirectors(persistentMovie.getDirectors());
 		movie.getDirectors().addAll(difference);
 	}
 
-	private void saveDifferenceCast(Movie movie, Set<MovieCredit> casts) {
-		for (MovieCredit credit : casts) {
-			try {
-				mergeMovieCredit(credit);
-			} catch (NullPointerException e) {
-				continue;
-			}
-			credit.setMovie(movie);
-		}
-		Set<MovieCredit> difference = Sets.difference(casts, movie.getCasts());
+	private void saveDifferenceCast(Movie movie, Movie persistentMovie) {
+		Set<MovieCredit> casts = movie.getCasts();
+		mergeMovieCreditSet(casts, movie);
+		Set<MovieCredit> difference = Sets.difference(casts, persistentMovie.getDirectors());
+		movie.setCasts(persistentMovie.getCasts());
 		movie.getCasts().addAll(difference);
 	}
 
-	private void saveDifferenceWriter(Movie movie, Set<MovieCredit> writers) {
-		for (MovieCredit credit : writers) {
-			try {
-				mergeMovieCredit(credit);
-			} catch (NullPointerException e) {
-				continue;
-			}
-			credit.setMovie(movie);
-		}
-		Set<MovieCredit> difference = Sets.difference(writers, movie.getWriters());
+	private void saveDifferenceWriter(Movie movie, Movie persistentMovie) {
+		Set<MovieCredit> writers = movie.getWriters();
+		mergeMovieCreditSet(writers, movie);
+		Set<MovieCredit> difference = Sets.difference(writers, persistentMovie.getDirectors());
+		movie.setWriters(persistentMovie.getWriters());
 		movie.getWriters().addAll(difference);
 	}
 
-	private void setDifferenceAka(Movie movie, Set<MovieAka> akas) {
-		for (MovieAka aka : akas) {
-			aka.setMovie(movie);
+	private void mergeMovieCreditSet(Set<MovieCredit> set, Movie movie) {
+		for (Iterator<MovieCredit> iter = set.iterator(); iter.hasNext();) {
+			try {
+				MovieCredit credit = iter.next();
+				mergeMovieCredit(credit);
+				credit.setMovie(movie);
+			} catch (NullPointerException e) {
+				iter.remove();
+			}
 		}
-		Set<MovieAka> difference = Sets.difference(akas, movie.getAkas());
-		movie.getAkas().addAll(difference);
-	}
-
-	private void saveDifferenceCountry(Movie movie, Set<MovieCountry> countries) {
-		Set<MovieCountry> difference = Sets.difference(countries, movie.getCountries());
-		for (MovieCountry country : difference) {
-			movie.getCountries().add(mergeMovieCountry(country));
-		}
-	}
-
-	private void saveDifferenceGenre(Movie movie, Set<MovieGenre> genres) {
-		Set<MovieGenre> difference = Sets.difference(genres, movie.getGenres());
-		for (MovieGenre genre : difference) {
-			movie.getGenres().add(mergeMovieGenre(genre));
-		}
-	}
-
-	private void saveDifferenceLanguage(Movie movie, Set<MovieLanguage> languages) {
-		Set<MovieLanguage> difference = Sets.difference(languages, movie.getLanguages());
-		for (MovieLanguage language : difference) {
-			movie.getLanguages().add(mergeMovieLanguage(language));
-		}
-	}
-
-	private void copyMovieProperties(Movie target, Movie source) {
-		target.setId(source.getId());
-		target.setImdb(source.getImdb());
-		target.setImage(source.getImage());
-		target.setCreatedAt(source.getCreatedAt());
-		target.setUpdatedAt(source.getUpdatedAt());
-		target.setAkas(source.getAkas());
-		target.setDirectors(source.getDirectors());
-		target.setCasts(source.getCasts());
-		target.setWriters(source.getWriters());
-		target.setCountries(source.getCountries());
-		target.setGenres(source.getGenres());
-		target.setLanguages(source.getLanguages());
 	}
 
 	private void mergeMovieCredit(MovieCredit credit) {
-		if (credit.getCelebrity() == null || credit.getCelebrity().getDoubanId() == null) {
-			throw new NullPointerException();
-		}
+		Validate.notNull(credit.getCelebrity());
+		Validate.notNull(credit.getCelebrity().getDoubanId());
 		String doubanId = credit.getCelebrity().getDoubanId();
 		Celebrity celebrity = celebrityDao.findByDoubanId(doubanId);
 		if (celebrity == null) {
-			celebrity = celebrityDao.save(credit.getCelebrity());
+			celebrity = credit.getCelebrity();
+			celebrity.setCreatedAt(DateTime.now());
+			celebrity = celebrityDao.save(celebrity);
 		}
 		credit.setCelebrity(celebrity);
 	}
 
-	private MovieCountry mergeMovieCountry(MovieCountry country) {
-		if (country.getValue() == null) {
-			return null;
-		}
-		MovieCountry exist = movieCountryDao.findByValue(country.getValue());
-		if (exist != null) {
-			return exist;
-		} else {
-			return movieCountryDao.save(country);
+	//////////////////
+
+	private <T, ID extends Serializable> Set<T> saveDifferenceEntitySet(Set<T> set, Set<T> persistSet,
+			JpaSpecRepository<T, ID> repository) {
+		Set<T> difference = Sets.difference(set, persistSet);
+		mergeSimpleEntitySet(difference, repository);
+		return difference;
+	}
+
+	//遍历集合元素，在数据库查询，如果存在，则返回已存在，如果不存在，则保存后返回。
+	private <T, ID extends Serializable> void mergeSimpleEntitySet(Set<T> set, JpaSpecRepository<T, ID> repository) {
+		for (T entity : set) {
+			mergeSimpleEntity(entity, "value", repository);
 		}
 	}
 
-	private MovieGenre mergeMovieGenre(MovieGenre genre) {
-		if (genre.getValue() == null) {
-			return null;
-		}
-		MovieGenre exist = movieGenreDao.findByValue(genre.getValue());
-		if (exist != null) {
-			return exist;
-		} else {
-			return movieGenreDao.save(genre);
-		}
-	}
-
-	private MovieLanguage mergeMovieLanguage(MovieLanguage language) {
-		if (language.getValue() == null) {
-			return null;
-		}
-		MovieLanguage exist = movieLanguageDao.findByValue(language.getValue());
-		if (exist != null) {
-			return exist;
-		} else {
-			return movieLanguageDao.save(language);
+	private <T, ID extends Serializable> void mergeSimpleEntity(T entity, String propertyName,
+			JpaSpecRepository<T, ID> repository) {
+		try {
+			String value = BeanUtils.getProperty(entity, propertyName);
+			Validate.notNull(value);
+			Specification<T> spec = SpecificationCreater.searchBy(Clause.instance().eq(propertyName, value));
+			T exist = repository.findOne(spec);
+			if (exist != null) {
+				BeanUtils.copyProperties(entity, exist);
+			} else {
+				repository.save(entity);
+			}
+		} catch (Exception e) {
 		}
 	}
 

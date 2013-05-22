@@ -181,10 +181,11 @@ public class JsonNodeParser {
 
 	private static String getString(JsonNode root, String key) {
 		if (root.has(key)) {
-			return root.get(key).asText();
-		} else {
-			return null;
+			if (!root.get(key).isNull()) {
+				return root.get(key).asText();
+			}
 		}
+		return null;
 	}
 
 	private static int getInt(JsonNode root, String key) {

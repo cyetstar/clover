@@ -15,9 +15,25 @@ public class MovieServiceTest extends AbstractTransactionalJUnit4SpringContextTe
 	@Autowired
 	MovieService movieService;
 
+	Long id;
+
+	//@Before
+	public void beforeRequestDouban() {
+		id = movieService.requestMovie("3231742").getId();
+	}
+
 	@Test
 	public void requestDouban() {
-		movieService.requestMovie("3231742");
+		id = movieService.requestMovie("3231823").getId();
+
+		//		Movie movie = movieService.findMovie(id);
+		//
+		//		assertEquals(3, movie.getAkas().size());
+		//		assertEquals(1, movie.getDirectors().size());
+		//		assertEquals(4, movie.getCasts().size());
+		//		assertEquals(2, movie.getGenres().size());
+		//		assertEquals(2, movie.getCountries().size());
+
 	}
 
 }
