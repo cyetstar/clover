@@ -28,7 +28,7 @@
       <label for="password"  class="control-label">密码:</label> 
       <input type="password" name="password" class="input-block-level required">
       <label class="checkbox" for="rememberMe"><input type="checkbox" name="rememberMe" value="true">下次自动登录</label>
-      <button class="btn btn-success" type="submit">登录</button>
+      <button class="btn btn-primary" type="submit">登录</button>
     </form>
   </div>
 </body>

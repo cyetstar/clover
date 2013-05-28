@@ -58,25 +58,18 @@
       </table>
       <tags:pagination path="${ctx}/movies" page="${page}" paramMap="${params}"/>
       <div id="button-group" class="clearfix pull-left">
-        <a class="btn btn-small btn-primary" href="${ctx}/movies/new" data-toggle="modal" data-target="#movie-modal">新增</a>
+        <a class="btn btn-small btn-primary" href="${ctx}/movies/new">新增</a>
         <a class="btn btn-small btn-primary" href="remote.html" data-toggle="modal" data-target="#modal">编辑</a>
         <a class="btn btn-small btn-primary" href="remote.html" data-toggle="modal" data-target="#modal">删除</a>
       </div>
     </fieldset>
   </div>
+  
+  <script type="text/javascript">
+  	$('.table > tbody > tr').on('click', function(){
+  		$(this).find('td').addClass('selected').end().siblings().find('td').removeClass('selected');
+  	});
+  </script>
 
-  <div id="movie-modal" class="modal hide fade" tabindex="-1" role="dialog">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">×</button>
-      <h3 id="myModalLabel">Modal header</h3>
-    </div>
-    <div class="modal-body">
-      <p>One fine body…</p>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" data-dismiss="modal">Close</button>
-      <button class="btn btn-primary">Save changes</button>
-    </div>
-  </div>
 </body>
 </html>

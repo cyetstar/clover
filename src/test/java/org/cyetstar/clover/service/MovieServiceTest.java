@@ -24,7 +24,7 @@ public class MovieServiceTest extends AbstractTransactionalJUnit4SpringContextTe
 
 	@Test
 	public void requestDouban() {
-		id = movieService.requestMovie("3231823").getId();
+		movieService.requestCelebrity("1054443");
 
 		//		Movie movie = movieService.findMovie(id);
 		//

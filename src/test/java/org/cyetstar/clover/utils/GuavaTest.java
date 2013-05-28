@@ -36,13 +36,13 @@ public class GuavaTest {
 		HashSet<MovieAka> b = newHashSet(new MovieAka("123"), new MovieAka("abc"), new MovieAka("gogo"));
 
 		for (MovieAka aka : Sets.union(a, b))
-			System.out.println(aka.getValue());
+			System.out.println(aka.getTitle());
 
 		System.out.println("==========");
 		for (MovieAka aka : Sets.difference(a, b))
-			System.out.println(aka.getValue());
+			System.out.println(aka.getTitle());
 		System.out.println("==========");
 		for (MovieAka aka : Sets.intersection(a, b))
-			System.out.println(aka.getValue());
+			System.out.println(aka.getTitle());
 	}
 }

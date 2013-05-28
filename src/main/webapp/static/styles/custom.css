@@ -1,24 +1,37 @@
+/************ 登录页*************/
 #login-form {
   max-width: 300px; padding: 19px 29px 29px; margin: 40px auto 50px; background-color: #fff; border: 1px solid #e5e5e5; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05); -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05); box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
 }
 
+/*********** 页头 *************/
 #sub-nav {
-  height: 60px; background-color: lightblue;
+  height: 60px; background-color: #1F6B75; color:#fff;
 }
 
 #sub-title {
   float: left;
+  font-weight:normal;
+  font-size:24px;
 }
 
 #sub-search {
   float: right; margin: 15px 0;
 }
-
+/************ 按钮组 *********/
 #button-group {
   margin: 10px 0;
 }
+/********** 表格 ***********/
+.table tr{
+  cursor: pointer;
+}
+.table tbody tr > td.selected{
+  background-color: #FFB673
+}
 
+
+/********** 分页 ***********/
 #pagination input[type="text"] {
   width: 24px; height: 14px; line-height: 14px; padding: 2px 4px; margin: 0px 2px;
 }
@@ -42,9 +55,48 @@
 #pagination .pagesize-dropdown .dropdown-menu>li>a {
   padding: 3px 7px;
 }
-
-#movie-modal{
-  width:800px;
-  margin-left:-400px
+/**********************/
+#show-title{
+  padding-left:20px;padding-right:20px;
+  font-weight: normal;
   
+}
+#show-title small{
+  padding-left:10px;
+  font-size:14px;
+  
+}
+#show-content .row{
+  margin-bottom:20px;
+}
+#show-poster {
+  text-align: center;
+}
+#show-poster img{
+  width:120px;
+  height:160px;
+}
+#show-detail .dl-horizontal dt{
+  width:90px;
+}
+#show-detail .dl-horizontal dd{
+  margin-left: 110px;
+}
+#show-article{
+  text-indent: 2em;
+}
+#rating h4{
+  margin-bottom:0;
+  color:#FF7A00;
+}
+/*******************/
+#add-mode{
+  margin-top:20px;
+  margin-bottom:20px;
+}
+#add-mode > div{
+  text-align: center;
+}
+#add-mode > div:first-child{
+  border-right:1px solid #ccc;
 }

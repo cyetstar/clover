@@ -1,6 +1,7 @@
 package org.cyetstar.clover.service;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -21,12 +22,13 @@ import org.cyetstar.clover.repository.MovieCreditDao;
 import org.cyetstar.clover.repository.MovieDao;
 import org.cyetstar.clover.repository.MovieGenreDao;
 import org.cyetstar.clover.repository.MovieLanguageDao;
+import org.cyetstar.clover.utils.DoubanParser;
 import org.cyetstar.clover.utils.DoubanRequest;
-import org.cyetstar.clover.utils.JsonNodeParser;
-import org.cyetstar.code.domain.Clause;
-import org.cyetstar.code.domain.Fetch;
-import org.cyetstar.code.spring.DataDomainHelper;
-import org.cyetstar.code.spring.SpecificationCreater;
+import org.cyetstar.core.domain.Clause;
+import org.cyetstar.core.domain.Fetch;
+import org.cyetstar.core.spring.DataDomainHelper;
+import org.cyetstar.core.spring.SpecificationCreater;
+import org.cyetstar.utils.Reflections;
 import org.cyetstar.utils.Strings;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,8 +107,14 @@ public class MovieService {
 
 	public Movie requestMovie(String doubanId) {
 		JsonNode jsonNode = doubanRequest.requestMovieInfo(doubanId);
-		Movie movie = JsonNodeParser.toMovie(jsonNode);
+		Movie movie = DoubanParser.toMovie(jsonNode);
 		return mergeMovie(movie);
+	}
+
+	public Celebrity requestCelebrity(String doubanId) {
+		JsonNode jsonNode = doubanRequest.requestCelebrityInfo(doubanId);
+		Celebrity celebrity = DoubanParser.toCelebrity(jsonNode);
+		return mergeCelebrity(celebrity);
 	}
 
 	private Movie mergeMovie(Movie movie) {
@@ -118,6 +126,20 @@ public class MovieService {
 			saveMovieProperties(movie);
 		}
 		return movieDao.save(movie);
+	}
+
+	private Celebrity mergeCelebrity(Celebrity celebrity) {
+		String doubanId = celebrity.getDoubanId();
+		Celebrity persistentCelebrity = celebrityDao.findByDoubanId(doubanId);
+		if (persistentCelebrity != null) {
+			celebrity.setId(persistentCelebrity.getId());
+			celebrity.setAvatar(persistentCelebrity.getAvatar());
+			celebrity.setCreatedAt(persistentCelebrity.getCreatedAt());
+			celebrity.setUpdatedAt(DateTime.now());
+		} else {
+			celebrity.setCreatedAt(DateTime.now());
+		}
+		return celebrityDao.save(celebrity);
 	}
 
 	///////////////////////////
@@ -236,31 +258,31 @@ public class MovieService {
 	private <T, ID extends Serializable> Set<T> saveDifferenceEntitySet(Set<T> set, Set<T> persistSet,
 			JpaSpecRepository<T, ID> repository) {
 		Set<T> difference = Sets.difference(set, persistSet);
-		mergeSimpleEntitySet(difference, repository);
+		difference = mergeSimpleEntitySet(difference, repository);
 		return difference;
 	}
 
 	//遍历集合元素，在数据库查询，如果存在，则返回已存在，如果不存在，则保存后返回。
-	private <T, ID extends Serializable> void mergeSimpleEntitySet(Set<T> set, JpaSpecRepository<T, ID> repository) {
+	private <T, ID extends Serializable> Set<T> mergeSimpleEntitySet(Set<T> set, JpaSpecRepository<T, ID> repository) {
 		for (T entity : set) {
-			mergeSimpleEntity(entity, "value", repository);
+			try {
+				T mergeEntity = mergeSimpleEntity(entity, "value", repository);
+				BeanUtils.copyProperties(entity, mergeEntity);
+			} catch (Exception e) {
+				throw Reflections.convertReflectionExceptionToUnchecked(e);
+			}
 		}
+		return set;
 	}
 
-	private <T, ID extends Serializable> void mergeSimpleEntity(T entity, String propertyName,
-			JpaSpecRepository<T, ID> repository) {
-		try {
-			String value = BeanUtils.getProperty(entity, propertyName);
-			Validate.notNull(value);
-			Specification<T> spec = SpecificationCreater.searchBy(Clause.instance().eq(propertyName, value));
-			T exist = repository.findOne(spec);
-			if (exist != null) {
-				BeanUtils.copyProperties(entity, exist);
-			} else {
-				repository.save(entity);
-			}
-		} catch (Exception e) {
-		}
+	private <T, ID extends Serializable> T mergeSimpleEntity(T entity, String propertyName,
+			JpaSpecRepository<T, ID> repository) throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
+		String value = BeanUtils.getProperty(entity, propertyName);
+		Validate.notNull(value);
+		Specification<T> spec = SpecificationCreater.searchBy(Clause.instance().eq(propertyName, value));
+		T exist = repository.findOne(spec);
+		return exist != null ? exist : repository.save(entity);
 	}
 
 }

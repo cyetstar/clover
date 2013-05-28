@@ -18,7 +18,7 @@ public class MovieData {
 
 	public static MovieAka newMovieAka(String t) {
 		MovieAka aka = new MovieAka();
-		aka.setValue(t);
+		aka.setTitle(t);
 		return aka;
 	}
 

@@ -3,6 +3,7 @@ package org.cyetstar.clover.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -87,7 +88,7 @@ public class Celebrity extends IdEntity {
 		this.avatar = avatar;
 	}
 
-	@OneToMany
+	@OneToMany(mappedBy = "celebrity", fetch = FetchType.LAZY)
 	public List<MovieCredit> getMovies() {
 		return movies;
 	}

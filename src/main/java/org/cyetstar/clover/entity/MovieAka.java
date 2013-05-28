@@ -11,13 +11,13 @@ public class MovieAka extends IdEntity {
 
 	private Movie movie;
 
-	private String value;
+	private String title;
 
 	public MovieAka() {
 	}
 
-	public MovieAka(String value) {
-		this.value = value;
+	public MovieAka(String title) {
+		this.title = title;
 	}
 
 	@ManyToOne
@@ -30,19 +30,19 @@ public class MovieAka extends IdEntity {
 		this.movie = movie;
 	}
 
-	public String getValue() {
-		return value;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
 
@@ -55,10 +55,10 @@ public class MovieAka extends IdEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		MovieAka other = (MovieAka) obj;
-		if (value == null) {
-			if (other.value != null)
+		if (title == null) {
+			if (other.title != null)
 				return false;
-		} else if (!value.equals(other.value))
+		} else if (!title.equals(other.title))
 			return false;
 		return true;
 	}

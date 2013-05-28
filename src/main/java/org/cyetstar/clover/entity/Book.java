@@ -1,10 +1,18 @@
 package org.cyetstar.clover.entity;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+
+import com.google.common.collect.Sets;
 
 @Entity
 @Table(name = "tb_book")
@@ -41,6 +49,8 @@ public class Book extends IdEntity {
 	private int numRaters;
 
 	private String image;
+
+	private Set<BookTag> tags = Sets.newLinkedHashSet();
 
 	private DateTime createdAt;
 
@@ -172,6 +182,16 @@ public class Book extends IdEntity {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "tb_book_book_tag", joinColumns = { @JoinColumn(name = "book_id") }, inverseJoinColumns = { @JoinColumn(name = "tag_id") })
+	public Set<BookTag> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<BookTag> tags) {
+		this.tags = tags;
 	}
 
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")

@@ -2,6 +2,7 @@ package org.cyetstar.clover.utils;
 
 import java.io.IOException;
 
+import org.apache.commons.codec.Charsets;
 import org.apache.commons.lang3.Validate;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -15,15 +16,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DoubanRequest {
 
-	private final static String BOOK_INFO_URL = "http://api.douban.com/v2/book/:id";
-
 	private final static String MOVIE_INFO_URL = "http://api.douban.com/v2/movie/subject/:id";
 
 	private final static String CELEBRITY_INFO_URL = "http://api.douban.com/v2/movie/celebrity/:id";
 
-	private final static String MUSIC_INFO_URL = "http://api.douban.com//v2/music/:id";
+	private final static String BOOK_INFO_URL = "http://api.douban.com/v2/book/:id";
 
-	private final static String CHARSET = "UTF-8";
+	private final static String MUSIC_INFO_URL = "http://api.douban.com/v2/music/:id";
 
 	private String apiKey;
 
@@ -71,7 +70,7 @@ public class DoubanRequest {
 		HttpGet httpGet = new HttpGet(url);
 		try {
 			HttpResponse response = httpClient.execute(httpGet);
-			return EntityUtils.toString(response.getEntity(), CHARSET);
+			return EntityUtils.toString(response.getEntity(), Charsets.UTF_8);
 		} catch (ClientProtocolException e) {
 		} catch (IOException e) {
 		} finally {

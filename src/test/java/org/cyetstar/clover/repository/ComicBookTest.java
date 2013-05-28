@@ -3,9 +3,9 @@ package org.cyetstar.clover.repository;
 import java.util.List;
 
 import org.cyetstar.clover.entity.ComicBook;
-import org.cyetstar.code.domain.Clause;
-import org.cyetstar.code.domain.Fetch;
-import org.cyetstar.code.spring.SpecificationCreater;
+import org.cyetstar.core.domain.Clause;
+import org.cyetstar.core.domain.Fetch;
+import org.cyetstar.core.spring.SpecificationCreater;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
