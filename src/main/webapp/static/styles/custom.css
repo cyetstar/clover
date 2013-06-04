@@ -89,14 +89,39 @@
   margin-bottom:0;
   color:#FF7A00;
 }
+#rating .icon-refresh{
+	margin-left: 5px;
+	margin-top: 2px;
+	opacity: 0.4;
+	cursor: pointer;
+}
 /*******************/
-#add-mode{
-  margin-top:20px;
-  margin-bottom:20px;
+#chose-mode{
+  margin:40px 0 20px;
 }
-#add-mode > div{
-  text-align: center;
+#chose-mode > div{
+  	height:200px;
 }
-#add-mode > div:first-child{
-  border-right:1px solid #ccc;
+#chose-mode > div:first-child{
+	border-right:1px solid #ccc;
+}
+#chose-mode > div:last-child{
+	margin-left:-1px;
+}
+
+#chose-mode fieldset{
+	margin:0 35px;
+}
+/********电影表单***********/
+
+.language-label, .country-label, .genre-label{
+	min-width: 65px
+}
+.controls + .controls{
+	margin-top:5px;
+}
+/********通用*******/
+.sign-help-inline{
+	font-size:16px;
+	cursor: pointer;
 }

@@ -10,11 +10,35 @@ import javax.persistence.Table;
 @Table(name = "tb_movie_credit")
 public class MovieCredit extends IdEntity {
 
+	public final static String DIRECTOR = "director";
+
+	public final static String WRITER = "writer";
+
+	public final static String CAST = "cast";
+
 	private Movie movie;
 
 	private String role;
 
 	private Celebrity celebrity;
+
+	public static MovieCredit newDirector() {
+		MovieCredit credit = new MovieCredit();
+		credit.setRole(DIRECTOR);
+		return credit;
+	}
+
+	public static MovieCredit newWriter() {
+		MovieCredit credit = new MovieCredit();
+		credit.setRole(WRITER);
+		return credit;
+	}
+
+	public static MovieCredit newCast() {
+		MovieCredit credit = new MovieCredit();
+		credit.setRole(CAST);
+		return credit;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "movie_id")

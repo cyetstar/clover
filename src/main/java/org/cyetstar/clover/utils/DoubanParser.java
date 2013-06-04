@@ -40,7 +40,7 @@ public class DoubanParser {
 		moviePropertyMap.put(MOVIE_YEAR_KEY, "year");
 		moviePropertyMap.put(MOVIE_SUMMARY_KEY, "summary");
 		moviePropertyMap.put(RATING_AVE_KEY, "rating");
-		moviePropertyMap.put(MOVIE_NUM_RATER_KEY, "numRaters");
+		moviePropertyMap.put(MOVIE_RATING_NUM_KEY, "numRaters");
 
 		celebrityPropertyMap.put(CELEBRITY_DBID_KEY, "doubanId");
 		celebrityPropertyMap.put(CELEBRITY_NAME_KEY, "name");
@@ -75,6 +75,14 @@ public class DoubanParser {
 		movie.setLanguages(toMovieLanguages(root));
 		movie.setWriters(toWriters(root));
 		return movie;
+	}
+
+	public static Rating toMovieRating(JsonNode root) {
+		return new Rating(getFloat(root, RATING_AVE_KEY), getInt(root, MOVIE_RATING_NUM_KEY));
+	}
+
+	public static Rating toRating(JsonNode root) {
+		return new Rating(getFloat(root, RATING_AVE_KEY), getInt(root, RATING_NUM_KEY));
 	}
 
 	public static Celebrity toCelebrity(JsonNode root) {
@@ -170,6 +178,19 @@ public class DoubanParser {
 		JsonNode node = getChildNode(root, key);
 		String[] array = getArrayString(node);
 		return array != null ? null : StringUtils.join(array, ",");
+	}
+
+	public static class Rating {
+
+		public float ave;
+
+		public int num;
+
+		public Rating(float ave, int num) {
+			this.ave = ave;
+			this.num = num;
+		}
+
 	}
 
 }

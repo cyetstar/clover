@@ -7,100 +7,35 @@
 <title>新增电影</title>
 </head>
 <body>
-  <%@ include file="movieHeader.jsp"%>
-  <div class="container">
-    <div class="row" id="add-mode">
-      <div class="span6"><button class="btn btn-warning">从豆瓣获取</button></div>
-      <div class="span6"><button class="btn">手动录入</button></div>
-    </div>
-  </div>
-  
-  <form class="form-horizontal hide">
-    <fieldset>
-      <div id="legend" class="">
-        <legend class="">填写电影信息</legend>
-      </div>
-      <div class="control-group">
-
-        <!-- Text input-->
-        <label class="control-label" for="input01">影片名</label>
-        <div class="controls">
-          <input type="text" placeholder="" class="input-xlarge">
-          <p class="help-block"></p>
-        </div>
-      </div>
-
-      <div class="control-group">
-
-        <!-- Text input-->
-        <label class="control-label" for="input01">原片名</label>
-        <div class="controls">
-          <input type="text" placeholder="" class="input-xlarge">
-          <p class="help-block"></p>
-        </div>
-      </div>
-
-      <div class="control-group">
-
-        <!-- Text input-->
-        <label class="control-label" for="input01">又名</label>
-        <div class="controls">
-          <input type="text" placeholder="" class="input-xlarge">
-          <p class="help-block"></p>
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label">类型</label>
-
-        <!-- Multiple Checkboxes -->
-        <div class="controls">
-          <!-- Inline Checkboxes -->
-          <label class="checkbox inline"> <input type="checkbox" value="1"> 1
-          </label> <label class="checkbox inline"> <input type="checkbox" value="2"> 2
-          </label> <label class="checkbox inline"> <input type="checkbox" value="3"> 3
-          </label>
-        </div>
-
-      </div>
-      <div class="control-group">
-        <label class="control-label">语言</label>
-
-        <!-- Multiple Checkboxes -->
-        <div class="controls">
-          <!-- Inline Checkboxes -->
-          <label class="checkbox inline"> <input type="checkbox" value="1"> 1
-          </label> <label class="checkbox inline"> <input type="checkbox" value="2"> 2
-          </label> <label class="checkbox inline"> <input type="checkbox" value="3"> 3
-          </label>
-        </div>
-
-      </div>
-      <div class="control-group">
-        <label class="control-label">制片国家/地区</label>
-
-        <!-- Multiple Checkboxes -->
-        <div class="controls">
-          <!-- Inline Checkboxes -->
-          <label class="checkbox inline"> <input type="checkbox" value="1"> 1
-          </label> <label class="checkbox inline"> <input type="checkbox" value="2"> 2
-          </label> <label class="checkbox inline"> <input type="checkbox" value="3"> 3
-          </label>
-        </div>
-
-      </div>
-      <div class="control-group">
-
-        <!-- Textarea -->
-        <label class="control-label">剧情简介</label>
-        <div class="controls">
-          <div class="textarea">
-            <textarea type="" class=""> </textarea>
-          </div>
-        </div>
-      </div>
-
-    </fieldset>
-  </form>
+	<%@ include file="movieHeader.jsp"%>
+	<div class="container">
+		<div id="chose-mode" class="row">
+			<div class="offset1 span5">
+				<fieldset>
+					<legend>
+						<small>从豆瓣电影获取</small>
+					</legend>
+					<form action="${ctx}/movies/fetch" method="post">
+					<input type="text" name="doubanId" value="" placeholder="输入豆瓣编号" autocomplete="off"/><br />
+					<input type="submit" class="btn btn-primary" value="开始获取"/>
+					</form>
+				</fieldset>
+			</div>
+			<div class="span5">
+				<fieldset>
+					<legend>
+						<small>资料录入</small>
+					</legend>
+					<input type="text" name="doubanId" value="" placeholder="输入IMDb编号" autocomplete="off"/>
+					<span class="help-block">如果IMDb编号的电影已经添加，将转到电影的编辑页面。</span>
+					<button class="btn">新增</button>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+	</script>
 </body>
 </html>
 

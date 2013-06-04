@@ -8,7 +8,7 @@ public class DoubanJsonKey {
 	public final static String MOVIE_ORIG_TITLE_KEY = "original_title";
 	public final static String MOVIE_SUBTYPE_KEY = "subtype";
 	public final static String MOVIE_YEAR_KEY = "year";
-	public final static String MOVIE_NUM_RATER_KEY = "ratings_count";
+	public final static String MOVIE_RATING_NUM_KEY = "ratings_count";
 	public final static String MOVIE_DURATION_KEY = "durations";
 	public final static String MOVIE_SUMMARY_KEY = "summary";
 

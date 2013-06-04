@@ -106,15 +106,35 @@
             </dl>
           </div>
           <div id="rating" class="span2">
-            <h4>${movie.rating}</h4>
-            <div>(${movie.numRaters}人评价)</div>
+            <h4><span class="rating">${movie.rating}</span><i class="icon-refresh hide" title="更新评分"></i></h4>
+            <div>(<span class="numRaters">${movie.numRaters}</span>人评价)</div>
           </div>
         </div>
         <p id="show-article">${movie.summary}</p>
       </div>
       <div class="span3"></div>
     </div>
-
   </div>
+<script type="text/javascript">
+$('#rating').hover(function(){
+	$('.icon-refresh').removeClass('hide');
+}, function(){
+	$('.icon-refresh').addClass('hide');
+})
+$('.icon-refresh').on('click', function(){
+	$.ajax({
+		url : '${ctx}/movies/updateRating',
+		data : {id:${movie.id}, doubanId:${movie.doubanId}},
+		type : 'post',
+		success : function(result){
+			if(result.success){
+				$('#rating .rating').text(result.data.ave);
+				$('#rating .numRaters').text(result.data.num);
+			}
+		}
+	})
+	
+})
+</script>
 </body>
 </html>

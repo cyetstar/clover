@@ -2000,10 +2000,10 @@
     constructor: Typeahead
 
   , select: function () {
-      var val = this.$menu.find('.active').attr('data-value')
+      var item = this.$menu.find('.active').data('data')
       this.$element
-        .val(this.updater(val))
-        .change()
+        .val(this.updater(item))
+        .trigger('change', item)
       return this.hide()
     }
 
@@ -2094,7 +2094,7 @@
       var that = this
 
       items = $(items).map(function (i, item) {
-        i = $(that.options.item).attr('data-value', item)
+        i = $(that.options.item).data('data', item)
         i.find('a').html(that.highlighter(item))
         return i[0]
       })

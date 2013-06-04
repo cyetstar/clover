@@ -10,6 +10,11 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 @Entity
 @Table(name = "tb_celebrity")
 public class Celebrity extends IdEntity {
@@ -88,6 +93,7 @@ public class Celebrity extends IdEntity {
 		this.avatar = avatar;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "celebrity", fetch = FetchType.LAZY)
 	public List<MovieCredit> getMovies() {
 		return movies;
@@ -97,6 +103,7 @@ public class Celebrity extends IdEntity {
 		this.movies = movies;
 	}
 
+	@JsonIgnore
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getCreatedAt() {
 		return createdAt;
@@ -106,6 +113,7 @@ public class Celebrity extends IdEntity {
 		this.createdAt = createdAt;
 	}
 
+	@JsonIgnore
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	public DateTime getUpdatedAt() {
 		return updatedAt;

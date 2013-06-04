@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -110,6 +111,7 @@ public class Movie extends IdEntity {
 
 	@OneToMany(mappedBy = "movie", orphanRemoval = true, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
 			CascadeType.MERGE, CascadeType.REMOVE })
+	@OrderBy
 	public Set<MovieAka> getAkas() {
 		return akas;
 	}
@@ -142,9 +144,10 @@ public class Movie extends IdEntity {
 		this.summary = summary;
 	}
 
-	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE })
+	@OneToMany(mappedBy = "movie", orphanRemoval = true, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE, CascadeType.REMOVE })
 	@Where(clause = "role='director'")
+	@OrderBy
 	public Set<MovieCredit> getDirectors() {
 		return directors;
 	}
@@ -153,9 +156,10 @@ public class Movie extends IdEntity {
 		this.directors = directors;
 	}
 
-	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE })
+	@OneToMany(mappedBy = "movie", orphanRemoval = true, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE, CascadeType.REMOVE })
 	@Where(clause = "role='cast'")
+	@OrderBy
 	public Set<MovieCredit> getCasts() {
 		return casts;
 	}
@@ -164,9 +168,10 @@ public class Movie extends IdEntity {
 		this.casts = casts;
 	}
 
-	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE })
+	@OneToMany(mappedBy = "movie", orphanRemoval = true, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE, CascadeType.REMOVE })
 	@Where(clause = "role='writer'")
+	@OrderBy
 	public Set<MovieCredit> getWriters() {
 		return writers;
 	}
@@ -185,6 +190,7 @@ public class Movie extends IdEntity {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_movie_movie_genre", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "genre_id") })
+	@OrderBy
 	public Set<MovieGenre> getGenres() {
 		return genres;
 	}
@@ -195,6 +201,7 @@ public class Movie extends IdEntity {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_movie_movie_language", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "language_id") })
+	@OrderBy
 	public Set<MovieLanguage> getLanguages() {
 		return languages;
 	}
@@ -205,6 +212,7 @@ public class Movie extends IdEntity {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_movie_movie_country", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "country_id") })
+	@OrderBy
 	public Set<MovieCountry> getCountries() {
 		return countries;
 	}

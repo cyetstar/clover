@@ -32,7 +32,8 @@
       <table class="table table-striped table-hover">
         <thead>
           <tr>
-            <th>序号</th>
+          	<th width="10"></th>
+            <th width="24">序号</th>
             <th>影片名（原名）</th>
             <th>年份</th>
             <th>评分</th>
@@ -47,28 +48,38 @@
           <c:if test="${!empty page}">
             <c:forEach items="${page.content}" var="item" varStatus="status">
               <tr>
+              	<td><input type="radio" class="pull-left" name="id" value="${item.id}"/></td>
                 <td>${status.index + 1}</td>
-                <td><a href="${ctx}/movies/${item.id}">${item.title}</a><c:if test="${!empty item.originalTitle}">（${item.originalTitle}）</c:if></td>
+                <td><a class="view" href="${ctx}/movies/${item.id}">${item.title}</a><c:if test="${!empty item.originalTitle}">（${item.originalTitle}）</c:if></td>
                 <td>${item.year}</td>
                 <td>${item.rating}</td>
               </tr>
             </c:forEach>
+          </c:if>
         </tbody>
-        </c:if>
       </table>
       <tags:pagination path="${ctx}/movies" page="${page}" paramMap="${params}"/>
       <div id="button-group" class="clearfix pull-left">
-        <a class="btn btn-small btn-primary" href="${ctx}/movies/new">新增</a>
-        <a class="btn btn-small btn-primary" href="remote.html" data-toggle="modal" data-target="#modal">编辑</a>
-        <a class="btn btn-small btn-primary" href="remote.html" data-toggle="modal" data-target="#modal">删除</a>
+        <a class="btn btn-small btn-primary btn-add" href="${ctx}/movies/add">新增</a>
+        <a class="btn btn-small btn-primary btn-edit" href="javascript:">编辑</a>
+        <a class="btn btn-small btn-primary btn-delete" href="javascript:">删除</a>
       </div>
     </fieldset>
   </div>
   
   <script type="text/javascript">
-  	$('.table > tbody > tr').on('click', function(){
-  		$(this).find('td').addClass('selected').end().siblings().find('td').removeClass('selected');
+  	$('.table > tbody').delegate('tr', 'click', function(event){
+  		if(!$(event.target).is('.view')){
+  			$(this).find(':radio').attr('checked', true);
+  		}
   	});
+  	$('.btn-edit').on('click',function(){
+  		window.location.href = '${ctx}/movies/edit/'+$(':radio:checked').val();
+  	})
+  	$('.btn-delete').on('click',function(){
+  		var $form = $('<form method="post"></form>').attr('action', '${ctx}/movies/delete/'+$(':radio:checked').val());
+  		$form.submit();
+  	})
   </script>
 
 </body>
