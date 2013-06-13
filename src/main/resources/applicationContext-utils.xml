@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+	default-lazy-init="true">
+
+	<description>Spring公共配置 </description>
+
+	<bean id="doubanRequestClient" class="org.cyetstar.clover.rest.douban.DoubanRequestClient">
+		<property name="apikey" value="${douban.apikey}" />
+	</bean>
+
+	<bean id="mapper" class="org.dozer.DozerBeanMapper">
+		<property name="mappingFiles">
+			<list>
+				<value>dozerBeanMapping.xml</value>
+				<value>dozerBeanMapping-douban.xml</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

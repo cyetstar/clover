@@ -19,6 +19,13 @@ public class MovieLanguage extends IdEntity {
 
 	private List<Movie> movies = Lists.newArrayList();
 
+	public MovieLanguage() {
+	}
+
+	public MovieLanguage(String value) {
+		this.value = value;
+	}
+
 	public String getValue() {
 		return value;
 	}

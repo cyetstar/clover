@@ -17,7 +17,6 @@ import org.cyetstar.clover.entity.MovieGenre;
 import org.cyetstar.clover.entity.MovieLanguage;
 import org.cyetstar.clover.service.DictionaryService;
 import org.cyetstar.clover.service.MovieService;
-import org.cyetstar.clover.utils.DoubanParser.Rating;
 import org.cyetstar.clover.web.JsonResult;
 import org.cyetstar.core.domain.Clause;
 import org.cyetstar.core.domain.Fetch;
@@ -90,9 +89,8 @@ public class MovieController {
 	@ResponseBody
 	public JsonResult updateRating(@RequestParam Long id, @RequestParam String doubanId) {
 		JsonResult result = new JsonResult();
-		Rating rating = movieService.updateMovieRating(id, doubanId);
+		Movie movie = movieService.updateMovieRating(id, doubanId);
 		result.setSuccess(true);
-		result.setData(rating);
 		return result;
 	}
 

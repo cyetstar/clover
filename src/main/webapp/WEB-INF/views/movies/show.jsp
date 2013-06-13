@@ -18,6 +18,9 @@
         <div class="row">
           <div id="show-poster" class="span2">
             <img alt="" src="${ctx}/static/poster/movie/${image}">
+            <div>
+            	<a href="">上传海报</a>
+            </div>
           </div>
           <div id="show-detail" class="span5">
             <dl class="dl-horizontal">
@@ -25,7 +28,7 @@
                 <dt>导演:</dt>
                 <dd>
                   <c:forEach items="${movie.directors}" var="item" varStatus="status">
-                    <a href="#">${item.celebrity.name}</a>
+                    <a href="${ctx}/celebrities/${item.celebrity.id}">${item.celebrity.name}</a>
                     <c:if test="${!status.last}">/</c:if>
                   </c:forEach>
                 </dd>
@@ -34,7 +37,7 @@
                 <dt>主演:</dt>
                 <dd>
                   <c:forEach items="${movie.casts}" var="item" varStatus="status">
-                    <a href="#">${item.celebrity.name}</a>
+                    <a href="${ctx}/celebrities/${item.celebrity.id}">${item.celebrity.name}</a>
                     <c:if test="${!status.last}">/</c:if>
                   </c:forEach>
                 </dd>
@@ -43,7 +46,7 @@
                 <dt>编剧:</dt>
                 <dd>
                   <c:forEach items="${movie.writers}" var="item" varStatus="status">
-                    <a href="#">${item.celebrity.name}</a>
+                    <a href="${ctx}/celebrities/${item.celebrity.id}">${item.celebrity.name}</a>
                     <c:if test="${!status.last}">/</c:if>
                   </c:forEach>
                 </dd>

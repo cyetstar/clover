@@ -19,6 +19,13 @@ public class MovieCountry extends IdEntity {
 
 	private List<Movie> movies = Lists.newArrayList();
 
+	public MovieCountry() {
+	}
+
+	public MovieCountry(String value) {
+		this.value = value;
+	}
+
 	public String getValue() {
 		return value;
 	}

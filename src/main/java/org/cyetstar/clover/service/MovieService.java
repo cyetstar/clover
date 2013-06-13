@@ -18,9 +18,7 @@ import org.cyetstar.clover.repository.MovieCreditDao;
 import org.cyetstar.clover.repository.MovieDao;
 import org.cyetstar.clover.repository.MovieGenreDao;
 import org.cyetstar.clover.repository.MovieLanguageDao;
-import org.cyetstar.clover.utils.DoubanParser;
-import org.cyetstar.clover.utils.DoubanParser.Rating;
-import org.cyetstar.clover.utils.DoubanRequest;
+import org.cyetstar.clover.rest.douban.DoubanRequestClient;
 import org.cyetstar.core.domain.Clause;
 import org.cyetstar.core.spring.DataDomainHelper;
 import org.cyetstar.core.spring.SpecificationCreater;
@@ -35,7 +33,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Sets;
 
 @Service
@@ -64,7 +61,7 @@ public class MovieService {
 	CelebrityDao celebrityDao;
 
 	@Autowired
-	DoubanRequest doubanRequest;
+	DoubanRequestClient doubanRequestClient;
 
 	@Transactional(readOnly = true)
 	public Page<Movie> findMovie(String key, int pageNum, int pageSize, String sort) {
@@ -105,21 +102,18 @@ public class MovieService {
 	}
 
 	public Movie fetchMovie(String doubanId) {
-		JsonNode jsonNode = doubanRequest.requestMovieInfo(doubanId);
-		Movie movie = DoubanParser.toMovie(jsonNode);
+		Movie movie = doubanRequestClient.requestMovie(doubanId);
 		return saveOrUpdateMovie(movie);
 	}
 
-	public Rating updateMovieRating(Long id, String doubanId) {
-		JsonNode jsonNode = doubanRequest.requestMovieInfo(doubanId);
-		Rating rating = DoubanParser.toMovieRating(jsonNode);
-		movieDao.updateRating(rating.ave, rating.num, DateTime.now(), id);
-		return rating;
+	public Movie updateMovieRating(Long id, String doubanId) {
+		Movie movie = doubanRequestClient.requestMovie(doubanId);
+		movieDao.updateRating(movie.getRating(), movie.getNumRaters(), DateTime.now(), id);
+		return movie;
 	}
 
 	public Celebrity requestCelebrity(String doubanId) {
-		JsonNode jsonNode = doubanRequest.requestCelebrityInfo(doubanId);
-		Celebrity celebrity = DoubanParser.toCelebrity(jsonNode);
+		Celebrity celebrity = doubanRequestClient.requestCelebrity(doubanId);
 		return mergeCelebrity(celebrity);
 	}
 
@@ -159,9 +153,9 @@ public class MovieService {
 		persistSimpleEntityCollection(movie.getGenres(), "value", movieGenreDao);
 		persistSimpleEntityCollection(movie.getLanguages(), "value", movieLanguageDao);
 
-		persistMovieCreditCollection(movie.getDirectors(), movie);
-		persistMovieCreditCollection(movie.getWriters(), movie);
-		persistMovieCreditCollection(movie.getCasts(), movie);
+		persistMovieCreditCollection(movie.getDirectors(), movie, MovieCredit.DIRECTOR);
+		persistMovieCreditCollection(movie.getCasts(), movie, MovieCredit.CAST);
+		persistMovieCreditCollection(movie.getWriters(), movie, MovieCredit.WRITER);
 		return movie;
 	}
 
@@ -233,10 +227,11 @@ public class MovieService {
 	// movie.getWriters().addAll(difference);
 	// }
 
-	private void persistMovieCreditCollection(Collection<MovieCredit> collection, Movie movie) {
+	private void persistMovieCreditCollection(Collection<MovieCredit> collection, Movie movie, String role) {
 		if (collection != null) {
 			for (MovieCredit credit : collection) {
 				credit.setMovie(movie);
+				credit.setRole(role);
 				persistMovieCredit(credit);
 			}
 		}
