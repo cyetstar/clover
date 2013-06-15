@@ -17,9 +17,9 @@
       <div id="show-content" class="span9">
         <div class="row">
           <div id="show-poster" class="span2">
-            <img alt="" src="${ctx}/static/poster/movie/${image}">
+            <img alt="" src="${ctx}/${movie.smallPoster}">
             <div>
-            	<a href="">上传海报</a>
+            	<a href="${ctx}/movies/uploadPoster/${movie.id}">上传海报</a>
             </div>
           </div>
           <div id="show-detail" class="span5">

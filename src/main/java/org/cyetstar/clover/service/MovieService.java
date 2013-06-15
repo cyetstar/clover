@@ -2,6 +2,7 @@ package org.cyetstar.clover.service;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -33,11 +34,20 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 
 @Service
 @Transactional
 public class MovieService {
+
+	public static final String POSTER_ORIGIN_PATH = "static/poster/origin/";
+
+	public static final String POSTER_SMALL_PATH = "static/poster/small/";
+
+	public static final String SUFFIX = ".jpg";
+
+	public static final Map<String, Integer> POSTER_SMALL_SIZE = ImmutableMap.of("width", 120, "height", 160);
 
 	@Autowired
 	MovieDao movieDao;
@@ -104,6 +114,13 @@ public class MovieService {
 	public Movie fetchMovie(String doubanId) {
 		Movie movie = doubanRequestClient.requestMovie(doubanId);
 		return saveOrUpdateMovie(movie);
+	}
+
+	public Movie updateMoviePoster(Long id, String posterFilename) {
+		Movie movie = movieDao.findOne(id);
+		movie.setImage(posterFilename);
+		movie.setUpdatedAt(DateTime.now());
+		return movieDao.save(movie);
 	}
 
 	public Movie updateMovieRating(Long id, String doubanId) {

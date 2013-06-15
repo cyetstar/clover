@@ -120,6 +120,28 @@
 .controls + .controls{
 	margin-top:5px;
 }
+/**********海报上传**********/
+#file-control{
+	 position: relative; overflow: hidden;
+}
+#file-control .file{
+	height: 36px; overflow: hidden; position: absolute; left: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer; direction: ltr;
+}
+#crop-area .origin, #crop-area .preview{
+	float:left;
+	margin-right:25px;
+}
+#crop-area .origin{
+	width:300px;
+	height:400px;
+}
+#crop-area .preview{
+	width:120px;
+	height:160px;
+	overflow: hidden;
+}
+
+
 /********通用*******/
 .sign-help-inline{
 	font-size:16px;
