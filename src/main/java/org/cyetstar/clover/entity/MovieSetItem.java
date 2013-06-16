@@ -9,53 +9,55 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 @Entity
-@Table(name = "tb_comic_book")
-public class ComicBook extends IdEntity {
+@Table(name = "tb_movie_set_item")
+public class MovieSetItem extends IdEntity {
 
-	private int bookVolume;
+	private Integer idx;
 
-	private String scanner;
+	private String comment;
 
-	private String cover;
+	private Movie movie;
 
-	private Comic comic;
+	private MovieSet set;
 
 	private DateTime createdAt;
 
 	private DateTime updatedAt;
 
-	public int getBookVolume() {
-		return bookVolume;
+	public Integer getIdx() {
+		return idx;
 	}
 
-	public void setBookVolume(int bookVolume) {
-		this.bookVolume = bookVolume;
+	public void setIdx(Integer idx) {
+		this.idx = idx;
 	}
 
-	public String getScanner() {
-		return scanner;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setScanner(String scanner) {
-		this.scanner = scanner;
-	}
-
-	public String getCover() {
-		return cover;
-	}
-
-	public void setCover(String cover) {
-		this.cover = cover;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "comic_id")
-	public Comic getComic() {
-		return comic;
+	@JoinColumn(name = "movie_id")
+	public Movie getMovie() {
+		return movie;
 	}
 
-	public void setComic(Comic comic) {
-		this.comic = comic;
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "set_id")
+	public MovieSet getSet() {
+		return set;
+	}
+
+	public void setSet(MovieSet set) {
+		this.set = set;
 	}
 
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")

@@ -26,7 +26,7 @@ public class Book extends IdEntity {
 
 	private String title;
 
-	private String originTitle;
+	private String originalTitle;
 
 	private String altTitle;
 
@@ -44,11 +44,11 @@ public class Book extends IdEntity {
 
 	private String summary;
 
-	private float rating;
+	private Float rating;
 
-	private int numRaters;
+	private Integer numRaters;
 
-	private String image;
+	private String cover;
 
 	private Set<BookTag> tags = Sets.newLinkedHashSet();
 
@@ -88,12 +88,12 @@ public class Book extends IdEntity {
 		this.title = title;
 	}
 
-	public String getOriginTitle() {
-		return originTitle;
+	public String getOriginalTitle() {
+		return originalTitle;
 	}
 
-	public void setOriginTitle(String originTitle) {
-		this.originTitle = originTitle;
+	public void setOriginalTitle(String originalTitle) {
+		this.originalTitle = originalTitle;
 	}
 
 	public String getAltTitle() {
@@ -160,28 +160,28 @@ public class Book extends IdEntity {
 		this.summary = summary;
 	}
 
-	public float getRating() {
+	public Float getRating() {
 		return rating;
 	}
 
-	public void setRating(float rating) {
+	public void setRating(Float rating) {
 		this.rating = rating;
 	}
 
-	public int getNumRaters() {
+	public Integer getNumRaters() {
 		return numRaters;
 	}
 
-	public void setNumRaters(int numRaters) {
+	public void setNumRaters(Integer numRaters) {
 		this.numRaters = numRaters;
 	}
 
-	public String getImage() {
-		return image;
+	public String getCover() {
+		return cover;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setCover(String cover) {
+		this.cover = cover;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)

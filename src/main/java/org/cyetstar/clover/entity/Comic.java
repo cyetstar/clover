@@ -18,7 +18,7 @@ public class Comic extends IdEntity {
 
 	private String title;
 
-	private String originTitle;
+	private String originalTitle;
 
 	private String altTitle;
 
@@ -34,7 +34,7 @@ public class Comic extends IdEntity {
 
 	private int totalVolume;
 
-	private String image;
+	private String cover;
 
 	private List<ComicBook> books = Lists.newArrayList();
 
@@ -50,12 +50,12 @@ public class Comic extends IdEntity {
 		this.title = title;
 	}
 
-	public String getOriginTitle() {
-		return originTitle;
+	public String getOriginalTitle() {
+		return originalTitle;
 	}
 
-	public void setOriginTitle(String originTitle) {
-		this.originTitle = originTitle;
+	public void setOriginalTitle(String originalTitle) {
+		this.originalTitle = originalTitle;
 	}
 
 	public String getAltTitle() {
@@ -114,12 +114,12 @@ public class Comic extends IdEntity {
 		this.totalVolume = totalVolume;
 	}
 
-	public String getImage() {
-		return image;
+	public String getCover() {
+		return cover;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setCover(String cover) {
+		this.cover = cover;
 	}
 
 	@OneToMany(mappedBy = "comic", cascade = CascadeType.REMOVE)

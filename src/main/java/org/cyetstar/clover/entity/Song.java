@@ -16,7 +16,7 @@ public class Song extends IdEntity {
 
 	private int trackId;
 
-	private String songName;
+	private String name;
 
 	private Ablum ablum;
 
@@ -40,12 +40,12 @@ public class Song extends IdEntity {
 		this.trackId = trackId;
 	}
 
-	public String getSongName() {
-		return songName;
+	public String getName() {
+		return name;
 	}
 
-	public void setSongName(String songName) {
-		this.songName = songName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@ManyToOne

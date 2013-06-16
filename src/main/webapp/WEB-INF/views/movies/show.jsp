@@ -115,7 +115,15 @@
         </div>
         <p id="show-article">${movie.summary}</p>
       </div>
-      <div class="span3"></div>
+      <div class="span3">
+      <div>
+      	<h4>操作</h4>
+   		<a href="" class="">编辑</a>
+   		<a href="" class="">删除</a>
+   		<a href="" class="">添加文件</a>
+   		<a href="" class="">加入影集</a>
+      </div>
+      </div>
     </div>
   </div>
 <script type="text/javascript">

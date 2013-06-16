@@ -117,8 +117,10 @@ public class MovieController {
 	}
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-	public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+	public String delete(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+		String rootPath = session.getServletContext().getRealPath("/");
 		movieService.deleteMovie(id);
+		posterService.remove(id, rootPath);
 		redirectAttributes.addFlashAttribute("success", true);
 		return "redirect:/movies";
 	}
@@ -136,8 +138,8 @@ public class MovieController {
 		if (!file.isEmpty()) {
 			String rootPath = session.getServletContext().getRealPath("/");
 			String posterFilename = posterService.upload(id, file, rootPath);
-			model.addAttribute("originPoster", posterService.getOriginPoster(posterFilename));
-			model.addAttribute("smallPoster", posterService.getOriginPoster(posterFilename));
+			model.addAttribute("originPoster", PosterService.getOriginPoster(posterFilename));
+			model.addAttribute("smallPoster", PosterService.getOriginPoster(posterFilename));
 
 			Movie movie = movieService.findMovie(id);
 			model.addAttribute("movie", movie);
@@ -152,7 +154,7 @@ public class MovieController {
 		String posterFilename = posterService.crop(id, width, height, x, y, rootPath);
 		Movie movie = movieService.updateMoviePoster(id, posterFilename);
 		String random = String.valueOf(DateTime.now().getMillis());
-		model.addAttribute("smallPoster", posterService.getSmallPoster(posterFilename) + "?" + random);
+		model.addAttribute("smallPoster", PosterService.getSmallPoster(posterFilename) + "?" + random);
 		model.addAttribute("movie", movie);
 		model.addAttribute("success", true);
 		return "movies/uploadPoster";

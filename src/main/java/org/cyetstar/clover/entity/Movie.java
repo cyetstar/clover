@@ -60,15 +60,19 @@ public class Movie extends IdEntity {
 
 	private String duration;
 
-	private float rating;
+	private Float rating;
 
-	private int numRaters;
+	private Integer numRaters;
 
-	private String image;
+	private String poster;
 
 	private DateTime createdAt;
 
 	private DateTime updatedAt;
+
+	private List<MovieFile> files = Lists.newArrayList();
+
+	private List<MovieSetItem> sets = Lists.newArrayList();
 
 	public Movie() {
 
@@ -190,7 +194,7 @@ public class Movie extends IdEntity {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tb_movie_movie_genre", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "genre_id") })
+	@JoinTable(name = "tb_movie_relations_movie_genre", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "genre_id") })
 	@OrderBy
 	public Set<MovieGenre> getGenres() {
 		return genres;
@@ -201,7 +205,7 @@ public class Movie extends IdEntity {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tb_movie_movie_language", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "language_id") })
+	@JoinTable(name = "tb_movie_relations_movie_language", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "language_id") })
 	@OrderBy
 	public Set<MovieLanguage> getLanguages() {
 		return languages;
@@ -212,7 +216,7 @@ public class Movie extends IdEntity {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tb_movie_movie_country", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "country_id") })
+	@JoinTable(name = "tb_movie_relations_movie_country", joinColumns = { @JoinColumn(name = "movie_id") }, inverseJoinColumns = { @JoinColumn(name = "country_id") })
 	@OrderBy
 	public Set<MovieCountry> getCountries() {
 		return countries;
@@ -222,28 +226,28 @@ public class Movie extends IdEntity {
 		this.countries = countries;
 	}
 
-	public float getRating() {
+	public Float getRating() {
 		return rating;
 	}
 
-	public void setRating(float rating) {
+	public void setRating(Float rating) {
 		this.rating = rating;
 	}
 
-	public int getNumRaters() {
+	public Integer getNumRaters() {
 		return numRaters;
 	}
 
-	public void setNumRaters(int numRaters) {
+	public void setNumRaters(Integer numRaters) {
 		this.numRaters = numRaters;
 	}
 
-	public String getImage() {
-		return image;
+	public String getPoster() {
+		return poster;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setPoster(String poster) {
+		this.poster = poster;
 	}
 
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -262,6 +266,24 @@ public class Movie extends IdEntity {
 
 	public void setUpdatedAt(DateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
+	public List<MovieFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<MovieFile> files) {
+		this.files = files;
+	}
+
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
+	public List<MovieSetItem> getSets() {
+		return sets;
+	}
+
+	public void setSets(List<MovieSetItem> sets) {
+		this.sets = sets;
 	}
 
 	public void addAka(MovieAka aka) {
@@ -284,11 +306,11 @@ public class Movie extends IdEntity {
 
 	@Transient
 	public String getOriginPoster() {
-		return PosterService.getOriginPoster(this.image);
+		return PosterService.getOriginPoster(this.poster);
 	}
 
 	@Transient
 	public String getSmallPoster() {
-		return PosterService.getSmallPoster(this.image);
+		return PosterService.getSmallPoster(this.poster);
 	}
 }

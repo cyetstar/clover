@@ -49,6 +49,14 @@ public class PosterService {
 		return posterFilename;
 	}
 
+	public void remove(Long movieId, String rootPath) {
+		String posterFilename = genPosterFilename(movieId);
+		File originFile = new File(rootPath + File.separator + getOriginPoster(posterFilename));
+		File smallFile = new File(rootPath + File.separator + getSmallPoster(posterFilename));
+		originFile.delete();
+		smallFile.delete();
+	}
+
 	private String genPosterFilename(Long movieId) {
 		return String.valueOf(movieId) + SUFFIX;
 	}

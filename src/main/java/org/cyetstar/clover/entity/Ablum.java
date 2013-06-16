@@ -37,11 +37,11 @@ public class Ablum extends IdEntity {
 
 	private String version;
 
-	private float rating;
+	private Float rating;
 
-	private int numRaters;
+	private Integer numRaters;
 
-	private String image;
+	private String cover;
 
 	private List<Song> songs = Lists.newArrayList();
 
@@ -74,7 +74,7 @@ public class Ablum extends IdEntity {
 	}
 
 	@ManyToMany
-	@JoinTable(name = "tb_ablum_musician", joinColumns = { @JoinColumn(name = "ablum_id") }, inverseJoinColumns = { @JoinColumn(name = "musician_id") })
+	@JoinTable(name = "tb_ablum_relations_musician", joinColumns = { @JoinColumn(name = "ablum_id") }, inverseJoinColumns = { @JoinColumn(name = "musician_id") })
 	public List<Musician> getSingers() {
 		return singers;
 	}
@@ -123,28 +123,28 @@ public class Ablum extends IdEntity {
 		this.version = version;
 	}
 
-	public float getRating() {
+	public Float getRating() {
 		return rating;
 	}
 
-	public void setRating(float rating) {
+	public void setRating(Float rating) {
 		this.rating = rating;
 	}
 
-	public int getNumRaters() {
+	public Integer getNumRaters() {
 		return numRaters;
 	}
 
-	public void setNumRaters(int numRaters) {
+	public void setNumRaters(Integer numRaters) {
 		this.numRaters = numRaters;
 	}
 
-	public String getImage() {
-		return image;
+	public String getCover() {
+		return cover;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setCover(String cover) {
+		this.cover = cover;
 	}
 
 	@OneToMany(mappedBy = "ablum", cascade = CascadeType.REMOVE)

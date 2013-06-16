@@ -9,53 +9,33 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 @Entity
-@Table(name = "tb_comic_book")
-public class ComicBook extends IdEntity {
+@Table(name = "tb_movie_file")
+public class MovieFile extends IdEntity {
 
-	private int bookVolume;
+	private Movie movie;
 
-	private String scanner;
-
-	private String cover;
-
-	private Comic comic;
+	private String filename;
 
 	private DateTime createdAt;
 
 	private DateTime updatedAt;
 
-	public int getBookVolume() {
-		return bookVolume;
-	}
-
-	public void setBookVolume(int bookVolume) {
-		this.bookVolume = bookVolume;
-	}
-
-	public String getScanner() {
-		return scanner;
-	}
-
-	public void setScanner(String scanner) {
-		this.scanner = scanner;
-	}
-
-	public String getCover() {
-		return cover;
-	}
-
-	public void setCover(String cover) {
-		this.cover = cover;
-	}
-
 	@ManyToOne
-	@JoinColumn(name = "comic_id")
-	public Comic getComic() {
-		return comic;
+	@JoinColumn(name = "movie_id")
+	public Movie getMovie() {
+		return movie;
 	}
 
-	public void setComic(Comic comic) {
-		this.comic = comic;
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")

@@ -42,7 +42,7 @@
         <tbody>
           <c:if test="${empty page.content}">
             <tr>
-              <td colspan="4">没有查询符合条件的记录。</td>
+              <td colspan="5">没有查询符合条件的记录。</td>
             </tr>
           </c:if>
           <c:if test="${!empty page}">

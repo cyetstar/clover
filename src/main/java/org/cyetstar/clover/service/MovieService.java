@@ -118,7 +118,7 @@ public class MovieService {
 
 	public Movie updateMoviePoster(Long id, String posterFilename) {
 		Movie movie = movieDao.findOne(id);
-		movie.setImage(posterFilename);
+		movie.setPoster(posterFilename);
 		movie.setUpdatedAt(DateTime.now());
 		return movieDao.save(movie);
 	}

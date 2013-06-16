@@ -35,7 +35,7 @@ public class MovieLanguage extends IdEntity {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tb_movie_movie_language", joinColumns = { @JoinColumn(name = "language_id") }, inverseJoinColumns = { @JoinColumn(name = "movie_id") })
+	@JoinTable(name = "tb_movie_relations_movie_language", joinColumns = { @JoinColumn(name = "language_id") }, inverseJoinColumns = { @JoinColumn(name = "movie_id") })
 	public List<Movie> getMovies() {
 		return movies;
 	}

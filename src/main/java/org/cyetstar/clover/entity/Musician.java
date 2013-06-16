@@ -64,7 +64,7 @@ public class Musician extends IdEntity {
 	}
 
 	@ManyToMany
-	@JoinTable(name = "tb_ablum_musician", joinColumns = { @JoinColumn(name = "musician_id") }, inverseJoinColumns = { @JoinColumn(name = "ablum_id") })
+	@JoinTable(name = "tb_ablum_relations_musician", joinColumns = { @JoinColumn(name = "musician_id") }, inverseJoinColumns = { @JoinColumn(name = "ablum_id") })
 	public List<Ablum> getAblums() {
 		return ablums;
 	}
