@@ -15,4 +15,7 @@ public interface MovieDao extends JpaSpecRepository<Movie, Long> {
 	@Query("update Movie set rating = ?1, numRaters = ?2 , updatedAt = ?3 where id = ?4")
 	void updateRating(float rating, int numRaters, DateTime updatedAt, Long id);
 
+	@Modifying
+	@Query("update Movie set poster = ?1, updatedAt = ?2 where id = ?3")
+	void updatePoster(String poster, DateTime updateAt, Long id);
 }

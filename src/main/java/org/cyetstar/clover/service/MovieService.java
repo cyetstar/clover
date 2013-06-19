@@ -116,11 +116,13 @@ public class MovieService {
 		return saveOrUpdateMovie(movie);
 	}
 
-	public Movie updateMoviePoster(Long id, String posterFilename) {
+	public Movie updateMoviePoster(Long id, String poster) {
 		Movie movie = movieDao.findOne(id);
-		movie.setPoster(posterFilename);
-		movie.setUpdatedAt(DateTime.now());
-		return movieDao.save(movie);
+		if (!poster.equals(movie.getPoster())) {
+			// update poster only different
+			movieDao.updatePoster(poster, DateTime.now(), id);
+		}
+		return movie;
 	}
 
 	public Movie updateMovieRating(Long id, String doubanId) {

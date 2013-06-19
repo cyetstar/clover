@@ -76,6 +76,7 @@ public class MovieController {
 						"casts.celebrity"), new Fetch("writers.celebrity"));
 		Movie movie = movieService.findMovie(spec);
 		model.addAttribute("movie", movie);
+		model.addAttribute("smallAccessPath", posterService.getSmallAccessPath());
 		return "movies/show";
 	}
 
@@ -133,15 +134,14 @@ public class MovieController {
 	}
 
 	@RequestMapping(value = "/uploadPoster/{id}", method = RequestMethod.POST)
-	public String uploadPoster(@PathVariable Long id, @RequestParam(value = "file") MultipartFile file,
-			HttpSession session, Model model) throws IOException {
+	public String uploadPoster(@PathVariable Long id, @RequestParam(value = "file") MultipartFile file, Model model)
+			throws IOException {
 		if (!file.isEmpty()) {
-			String rootPath = session.getServletContext().getRealPath("/");
-			String posterFilename = posterService.upload(id, file, rootPath);
-			model.addAttribute("originPoster", PosterService.getOriginPoster(posterFilename));
-			model.addAttribute("smallPoster", PosterService.getOriginPoster(posterFilename));
-
+			String poster = posterService.upload(id, file);
 			Movie movie = movieService.findMovie(id);
+			movie.setPoster(poster);
+			model.addAttribute("originAccessPath", posterService.getOriginAccessPath());
+			model.addAttribute("smallAccessPath", posterService.getOriginAccessPath());
 			model.addAttribute("movie", movie);
 		}
 		return "movies/uploadPoster";
@@ -149,12 +149,13 @@ public class MovieController {
 
 	@RequestMapping(value = "/cropPoster/{id}")
 	public String cropPoster(@PathVariable Long id, @RequestParam double width, @RequestParam double height,
-			@RequestParam double x, @RequestParam double y, HttpSession session, Model model) throws IOException {
-		String rootPath = session.getServletContext().getRealPath("/");
-		String posterFilename = posterService.crop(id, width, height, x, y, rootPath);
-		Movie movie = movieService.updateMoviePoster(id, posterFilename);
+			@RequestParam double x, @RequestParam double y, Model model) throws IOException {
+		String poster = posterService.crop(id, width, height, x, y);
+		Movie movie = movieService.updateMoviePoster(id, poster);
 		String random = String.valueOf(DateTime.now().getMillis());
-		model.addAttribute("smallPoster", PosterService.getSmallPoster(posterFilename) + "?" + random);
+		movie.setPoster(poster + "?" + random);
+		model.addAttribute("originAccessPath", posterService.getOriginAccessPath());
+		model.addAttribute("smallAccessPath", posterService.getSmallAccessPath());
 		model.addAttribute("movie", movie);
 		model.addAttribute("success", true);
 		return "movies/uploadPoster";

@@ -5,6 +5,7 @@
 <html>
 <head>
 <title>${movie.title} · 电影</title>
+<script src="${ctx}/static/sco.js/sco.modal.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -17,7 +18,7 @@
       <div id="show-content" class="span9">
         <div class="row">
           <div id="show-poster" class="span2">
-            <img alt="" src="${ctx}/${movie.smallPoster}">
+            <img alt="" src="${smallAccessPath}/${movie.poster}">
             <div>
             	<a href="${ctx}/movies/uploadPoster/${movie.id}">上传海报</a>
             </div>
@@ -114,6 +115,24 @@
           </div>
         </div>
         <p id="show-article">${movie.summary}</p>
+        <div>
+        	<h5>电影文件</h5>
+        	<a href="${ctx}/movies/addFile?movieId=${movie.id}" data-trigger="modal" data-title="添加电影文件信息">添加文件</a>
+        	<ol>
+        		<li>dddd</li>	
+        	</ol>
+        </div>
+      	<a class="btn btn-small btn-add" href="${ctx}/movies/add">加入影集</a>
+      	<div class="btn-group">
+		  <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">更多操作
+		    <span class="caret"></span>
+		  </a>
+		  <ul class="dropdown-menu">
+		    <li><a href="javascript:">新增</a></li>
+		    <li><a href="javascript:">编辑</a></li>
+		    <li><a href="javascript:">删除</a></li>
+		  </ul>
+		</div>
       </div>
       <div class="span3">
       <div>

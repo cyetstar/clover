@@ -48,10 +48,10 @@
 				<div class="controls">
 					<div id="crop-area" class="clearfix">
 						<div class="origin">
-							<img alt="" src="${ctx}/${originPoster}">
+							<img alt="" src="${originAccessPath}/${movie.poster}">
 						</div>
 						<div class="preview">
-							<img alt="" src="${ctx}/${smallPoster}">
+							<img alt="" src="${smallAccessPath}/${movie.poster}">
 						</div>
 					<div class="help-block">随意拖拽或缩放大图中的虚线方格，预览的小图即为保存后的小头像图标。</div>
 					</div>

@@ -9,6 +9,21 @@
 	<bean id="doubanRequestClient" class="org.cyetstar.clover.rest.douban.DoubanRequestClient">
 		<property name="apikey" value="${douban.apikey}" />
 	</bean>
+	
+	<bean id="storage" class="org.cyetstar.clover.service.storage.ServletLocalStorage">
+		<property name="rootDir" value="${storage.rootdir}" />
+	</bean>
+	<!-- 
+	<bean id="storage" class="org.cyetstar.clover.service.storage.BaiduCloudStorage">
+		<property name="rootDir" value="${bcs.bucket}" />
+		<property name="objectPolicy" value="public-read" />
+		<property name="requestClient" ref="bcsRequestClient"/>
+	</bean> -->
+	
+	<bean id="bcsRequestClient" class="org.cyetstar.clover.rest.baidu.BcsRequestClient">
+		<property name="accessKey" value="${bcs.accessKey}" />
+		<property name="secretKey" value="${bcs.secretKey}" />
+	</bean>
 
 	<bean id="mapper" class="org.dozer.DozerBeanMapper">
 		<property name="mappingFiles">

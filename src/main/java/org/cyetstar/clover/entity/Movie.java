@@ -16,7 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.shiro.util.StringUtils;
-import org.cyetstar.clover.service.PosterService;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 import org.joda.time.DateTime;
@@ -304,13 +303,4 @@ public class Movie extends IdEntity {
 		return this.duration != null ? Lists.newArrayList(StringUtils.split(this.duration)) : null;
 	}
 
-	@Transient
-	public String getOriginPoster() {
-		return PosterService.getOriginPoster(this.poster);
-	}
-
-	@Transient
-	public String getSmallPoster() {
-		return PosterService.getSmallPoster(this.poster);
-	}
 }
