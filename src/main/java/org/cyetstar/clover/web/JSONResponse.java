@@ -1,8 +1,10 @@
 package org.cyetstar.clover.web;
 
-public class JsonResult {
+public class JSONResponse {
 
 	private boolean success;
+
+	private String message;
 
 	private Object data;
 
@@ -12,6 +14,14 @@ public class JsonResult {
 
 	public void setSuccess(boolean success) {
 		this.success = success;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public Object getData() {

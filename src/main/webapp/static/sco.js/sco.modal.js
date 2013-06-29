@@ -102,12 +102,14 @@
 						self.options.content = $(this).html();
 						delete self.options.remote;
 					}
+					self.$modal.show().addClass('in');
 				});
 			} else {
 				this.$modal.find('.inner').html(this.options.content);
+				this.$modal.show().addClass('in');
 			}
 
-			this.$modal.show().addClass('in');
+			//this.$modal.show().addClass('in');
 			return this;
 		}
 

@@ -4,10 +4,11 @@
 		<pattern>/static/*</pattern>
 		<pattern>/api/*</pattern>
 		
-		<pattern>/movies/addFile*</pattern>
+		<pattern>/movieFiles/add*</pattern>
+		<pattern>/movieFiles/edit*</pattern>
 	</excludes>
 	
-	<decorator name="default" page="defaultLayout.jsp">
+	<decorator name="default" page="default.jsp">
 		<pattern>/*</pattern>
 	</decorator>
 </decorators>

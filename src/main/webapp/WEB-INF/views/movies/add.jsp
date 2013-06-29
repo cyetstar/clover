@@ -7,7 +7,7 @@
 <title>新增电影</title>
 </head>
 <body>
-	<%@ include file="movieHeader.jsp"%>
+	<%@ include file="/WEB-INF/views/movies/_header.jsp"%>
 	<div class="container">
 		<div id="chose-mode" class="row">
 			<div class="offset1 span5">

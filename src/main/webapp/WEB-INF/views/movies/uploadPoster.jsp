@@ -9,7 +9,7 @@
 <script src="${ctx}/static/jquery-jcrop/jquery.Jcrop.js" type="text/javascript"></script>
 </head>
 <body>
-	<%@ include file="movieHeader.jsp"%>
+	<%@ include file="/WEB-INF/views/movies/_header.jsp"%>
 	<div class="container">
 		<form id="upload-form" action="${ctx}/movies/uploadPoster/${movie.id}" enctype="multipart/form-data" method="post" class="form-horizontal">
 			<fieldset>

@@ -5,25 +5,26 @@
 <html>
 <head>
 <title>${movie.title} · 电影</title>
+<link href="${ctx}/static/sco.js/scojs.css" type="text/css" rel="stylesheet" />
 <script src="${ctx}/static/sco.js/sco.modal.js" type="text/javascript"></script>
 </head>
 
 <body>
-  <%@ include file="movieHeader.jsp"%>
+  <%@ include file="/WEB-INF/views/movies/_header.jsp"%>
   <div class="container">
     <div class="row">
       <h3 id="show-title">
         ${movie.title} ${movie.originalTitle}<small>(${movie.year})</small>
       </h3>
       <div id="show-content" class="span9">
-        <div class="row">
+        <div id="show-detail" class="row">
           <div id="show-poster" class="span2">
             <img alt="" src="${smallAccessPath}/${movie.poster}">
-            <div>
-            	<a href="${ctx}/movies/uploadPoster/${movie.id}">上传海报</a>
+            <div id="poster-bottom">
+            	<a href="${ctx}/movies/uploadPoster/${movie.id}" class="btn btn-mini">上传海报</a>
             </div>
           </div>
-          <div id="show-detail" class="span5">
+          <div id="show-items" class="span5">
             <dl class="dl-horizontal">
               <c:if test="${!empty movie.directors}">
                 <dt>导演:</dt>
@@ -113,26 +114,31 @@
             <h4><span class="rating">${movie.rating}</span><i class="icon-refresh hide" title="更新评分"></i></h4>
             <div>(<span class="numRaters">${movie.numRaters}</span>人评价)</div>
           </div>
+          <div class="btn-group">
+            <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">更多操作
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="javascript:">新增</a></li>
+              <li><a href="javascript:">编辑</a></li>
+              <li><a href="javascript:">删除</a></li>
+            </ul>
+          </div>
         </div>
         <p id="show-article">${movie.summary}</p>
-        <div>
-        	<h5>电影文件</h5>
-        	<a href="${ctx}/movies/addFile?movieId=${movie.id}" data-trigger="modal" data-title="添加电影文件信息">添加文件</a>
-        	<ol>
-        		<li>dddd</li>	
-        	</ol>
+        <div id="show-files" class="clearfix">
+          <h5>电影文件</h5>
+          <ul id="file-list">
+            <c:forEach items="${files}" var="file">
+              <li class="clearfix" data-file-id="${file.id}">
+              <span>${file.filename}</span> 
+              <a href="javascript:" class="delete btn btn-mini btn-danger">删除</a> 
+              <a href="${ctx}/movieFiles/edit/${file.id}" data-trigger="modal" data-title="修改电影文件信息" class="edit btn btn-mini">修改</a>
+              </li>
+            </c:forEach>
+          </ul>
+          <a href="${ctx}/movieFiles/add?movieId=${movie.id}" data-trigger="modal" data-title="添加电影文件信息" id="add-file" class="btn btn-mini pull-right">添加文件</a>
         </div>
-      	<a class="btn btn-small btn-add" href="${ctx}/movies/add">加入影集</a>
-      	<div class="btn-group">
-		  <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">更多操作
-		    <span class="caret"></span>
-		  </a>
-		  <ul class="dropdown-menu">
-		    <li><a href="javascript:">新增</a></li>
-		    <li><a href="javascript:">编辑</a></li>
-		    <li><a href="javascript:">删除</a></li>
-		  </ul>
-		</div>
       </div>
       <div class="span3">
       <div>
@@ -151,6 +157,7 @@ $('#rating').hover(function(){
 }, function(){
 	$('.icon-refresh').addClass('hide');
 })
+
 $('.icon-refresh').on('click', function(){
 	$.ajax({
 		url : '${ctx}/movies/updateRating',
@@ -164,6 +171,24 @@ $('.icon-refresh').on('click', function(){
 		}
 	})
 	
+})
+
+$('#file-list').on('click', '.delete', function(){
+	var self = this;
+	var $li = $(self).closest('li');
+	var id = $li.attr('data-file-id');
+	$.ajax({
+		url:'${ctx}/movieFiles/delete/' + id,
+		type:'post',
+		dataType:'json',
+		success:function(jsondata){
+			if(jsondata.success){
+				$li.slideUp('slow', function(){
+					$(this).remove();
+				});
+			}
+		}
+	})
 })
 </script>
 </body>

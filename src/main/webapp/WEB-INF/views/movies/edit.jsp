@@ -7,7 +7,7 @@
 <title>编辑电影</title>
 </head>
 <body>
-	<%@ include file="movieHeader.jsp"%>
+	<%@ include file="/WEB-INF/views/movies/_header.jsp"%>
 	<div class="container">
 		<fieldset>
 			<legend>

@@ -6,13 +6,11 @@
 
 /*********** 页头 *************/
 #sub-nav {
-  height: 60px; background-color: #1F6B75; color:#fff;
+  height: 60px; background-color: #1F6B75; color: #fff;
 }
 
 #sub-title {
-  float: left;
-  font-weight:normal;
-  font-size:24px;
+  float: left; font-weight: normal; font-size: 24px;
 }
 
 #sub-search {
@@ -23,13 +21,13 @@
   margin: 10px 0;
 }
 /********** 表格 ***********/
-.table tr{
+.table tr {
   cursor: pointer;
 }
-.table tbody tr > td.selected{
+
+.table tbody tr>td.selected {
   background-color: #FFB673
 }
-
 
 /********** 分页 ***********/
 #pagination input[type="text"] {
@@ -48,7 +46,7 @@
   line-height: 14px; float: left; margin: auto 2px;
 }
 
-#pagination .pagesize-dropdown .dropdown-menu{
+#pagination .pagesize-dropdown .dropdown-menu {
   min-width: 20px;
 }
 
@@ -56,92 +54,136 @@
   padding: 3px 7px;
 }
 /**********************/
-#show-title{
-  padding-left:20px;padding-right:20px;
-  font-weight: normal;
-  
+#show-title {
+  padding-left: 20px; padding-right: 20px; font-weight: normal;
 }
-#show-title small{
-  padding-left:10px;
-  font-size:14px;
-  
+
+#show-title small {
+  padding-left: 10px; font-size: 14px;
 }
-#show-content .row{
-  margin-bottom:20px;
+
+#show-detail {
+  margin-bottom: 20px;
+  position: relative;
 }
+
 #show-poster {
   text-align: center;
 }
-#show-poster img{
-  width:120px;
-  height:160px;
+
+#show-poster img {
+  width: 120px; height: 160px;
 }
-#show-detail .dl-horizontal dt{
-  width:90px;
+
+#poster-bottom{
+  margin-top:10px;
 }
-#show-detail .dl-horizontal dd{
+
+#show-detail .dl-horizontal dt {
+  width: 90px;
+}
+
+#show-detail .dl-horizontal dd {
   margin-left: 110px;
 }
-#show-article{
+
+#show-detail .btn-group{
+  position: absolute;
+  right: 0;
+  bottom: 20px;
+}
+
+#show-article {
   text-indent: 2em;
 }
-#rating h4{
-  margin-bottom:0;
-  color:#FF7A00;
+
+#rating h4 {
+  margin-bottom: 0; color: #FF7A00;
 }
-#rating .icon-refresh{
-	margin-left: 5px;
-	margin-top: 2px;
-	opacity: 0.4;
-	cursor: pointer;
+
+#rating .icon-refresh {
+  margin-left: 5px; margin-top: 2px; opacity: 0.4; cursor: pointer;
 }
 /*******************/
-#chose-mode{
-  margin:40px 0 20px;
-}
-#chose-mode > div{
-  	height:200px;
-}
-#chose-mode > div:first-child{
-	border-right:1px solid #ccc;
-}
-#chose-mode > div:last-child{
-	margin-left:-1px;
+#chose-mode {
+  margin: 40px 0 20px;
 }
 
-#chose-mode fieldset{
-	margin:0 35px;
+#chose-mode>div {
+  height: 200px;
+}
+
+#chose-mode>div:first-child {
+  border-right: 1px solid #ccc;
+}
+
+#chose-mode>div:last-child {
+  margin-left: -1px;
+}
+
+#chose-mode fieldset {
+  margin: 0 35px;
 }
 /********电影表单***********/
-
-.language-label, .country-label, .genre-label{
-	min-width: 65px
+.language-label,.country-label,.genre-label {
+  min-width: 65px
 }
-.controls + .controls{
-	margin-top:5px;
+
+.controls+.controls {
+  margin-top: 5px;
 }
 /**********海报上传**********/
-#file-control{
-	 position: relative; overflow: hidden;
-}
-#file-control .file{
-	height: 36px; overflow: hidden; position: absolute; left: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer; direction: ltr;
-}
-#crop-area .origin, #crop-area .preview{
-	float:left;
-	margin-right:25px;
-}
-#crop-area .origin{
-	width:300px;
-}
-#crop-area .preview{
-	width:120px;
-	overflow: hidden;
+#file-control {
+  position: relative; overflow: hidden;
 }
 
+#file-control .file {
+  height: 36px; overflow: hidden; position: absolute; left: 0; top: 0; opacity: 0; filter: alpha(opacity =   0); cursor: pointer; direction: ltr;
+}
+
+#crop-area .origin,#crop-area .preview {
+  float: left; margin-right: 25px;
+}
+
+#crop-area .origin {
+  width: 300px;
+}
+
+#crop-area .preview {
+  width: 120px; overflow: hidden;
+}
+
+/****************/
+#file-list {
+  list-style: none; margin: 0;
+}
+
+#file-list li {
+  line-height: 40px; padding: 0 10px;
+}
+
+#file-list li:hover {
+  background-color: #f9f9f9;
+}
+
+#file-list li span {
+  float: left;
+}
+
+#file-list li a {
+  float: right; display: none; margin: 9px 10px 0 0;
+}
+
+#file-list li .delete {
+  margin-right: 0;
+}
+
+#file-list li:hover a {
+  display: block;
+}
+
+#add-file{
+  margin:10px 0;
+}
 
 /********通用*******/
-.sign-help-inline{
-	font-size:16px;
-	cursor: pointer;
-}

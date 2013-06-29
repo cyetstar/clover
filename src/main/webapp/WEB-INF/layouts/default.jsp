@@ -24,9 +24,9 @@
 </head>
 
 <body>
-  <%@ include file="/WEB-INF/layouts/header.jsp"%>
+  <%@ include file="/WEB-INF/layouts/_header.jsp"%>
   <sitemesh:body />
-  <%@ include file="/WEB-INF/layouts/footer.jsp"%>
+  <%@ include file="/WEB-INF/layouts/_footer.jsp"%>
   <script src="${ctx}/static/bootstrap/js/bootstrap.js" type="text/javascript"></script>
 </body>
 </html>

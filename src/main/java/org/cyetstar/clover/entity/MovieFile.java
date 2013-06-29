@@ -8,6 +8,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_movie_file")
 public class MovieFile extends IdEntity {
@@ -20,6 +22,7 @@ public class MovieFile extends IdEntity {
 
 	private DateTime updatedAt;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "movie_id")
 	public Movie getMovie() {

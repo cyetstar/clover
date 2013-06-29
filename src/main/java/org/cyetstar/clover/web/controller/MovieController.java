@@ -15,12 +15,14 @@ import org.cyetstar.clover.entity.Movie;
 import org.cyetstar.clover.entity.MovieAka;
 import org.cyetstar.clover.entity.MovieCountry;
 import org.cyetstar.clover.entity.MovieCredit;
+import org.cyetstar.clover.entity.MovieFile;
 import org.cyetstar.clover.entity.MovieGenre;
 import org.cyetstar.clover.entity.MovieLanguage;
 import org.cyetstar.clover.service.DictionaryService;
+import org.cyetstar.clover.service.MovieFileService;
 import org.cyetstar.clover.service.MovieService;
 import org.cyetstar.clover.service.PosterService;
-import org.cyetstar.clover.web.JsonResult;
+import org.cyetstar.clover.web.JSONResponse;
 import org.cyetstar.core.domain.Clause;
 import org.cyetstar.core.domain.Fetch;
 import org.cyetstar.core.spring.SpecificationCreater;
@@ -51,6 +53,9 @@ public class MovieController {
 	MovieService movieService;
 
 	@Autowired
+	MovieFileService fileService;
+
+	@Autowired
 	PosterService posterService;
 
 	@Autowired
@@ -75,7 +80,9 @@ public class MovieController {
 				new Fetch("akas"), new Fetch("countries"), new Fetch("languages"), new Fetch("directors.celebrity"), new Fetch(
 						"casts.celebrity"), new Fetch("writers.celebrity"));
 		Movie movie = movieService.findMovie(spec);
+		List<MovieFile> files = fileService.findFilesByMovieId(id);
 		model.addAttribute("movie", movie);
+		model.addAttribute("files", files);
 		model.addAttribute("smallAccessPath", posterService.getSmallAccessPath());
 		return "movies/show";
 	}
@@ -170,11 +177,11 @@ public class MovieController {
 
 	@RequestMapping(value = "/updateRating", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult updateRating(@RequestParam Long id, @RequestParam String doubanId) {
-		JsonResult result = new JsonResult();
+	public JSONResponse updateRating(@RequestParam Long id, @RequestParam String doubanId) {
+		JSONResponse response = new JSONResponse();
 		Movie movie = movieService.updateMovieRating(id, doubanId);
-		result.setSuccess(true);
-		return result;
+		response.setSuccess(true);
+		return response;
 	}
 
 	@ModelAttribute
