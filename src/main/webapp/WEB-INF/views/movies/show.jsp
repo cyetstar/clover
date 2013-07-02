@@ -21,7 +21,7 @@
           <div id="show-poster" class="span2">
             <img alt="" src="${smallAccessPath}/${movie.poster}">
             <div id="poster-bottom">
-            	<a href="${ctx}/movies/uploadPoster/${movie.id}" class="btn btn-mini">上传海报</a>
+            	<a href="${ctx}/movies/uploadPoster/${movie.id}">上传海报</a>
             </div>
           </div>
           <div id="show-items" class="span5">
@@ -128,6 +128,7 @@
         <p id="show-article">${movie.summary}</p>
         <div id="show-files" class="clearfix">
           <h5>电影文件</h5>
+          <a href="${ctx}/movieFiles/add?movieId=${movie.id}" data-trigger="modal" data-title="添加电影文件信息" id="add-file">添加文件</a>
           <ul id="file-list">
             <c:forEach items="${files}" var="file">
               <li class="clearfix" data-file-id="${file.id}">
@@ -137,16 +138,17 @@
               </li>
             </c:forEach>
           </ul>
-          <a href="${ctx}/movieFiles/add?movieId=${movie.id}" data-trigger="modal" data-title="添加电影文件信息" id="add-file" class="btn btn-mini pull-right">添加文件</a>
         </div>
       </div>
       <div class="span3">
       <div>
-      	<h4>操作</h4>
-   		<a href="" class="">编辑</a>
-   		<a href="" class="">删除</a>
-   		<a href="" class="">添加文件</a>
-   		<a href="" class="">加入影集</a>
+      	<h5>影集</h5>
+        <a href="${ctx}/movieSets/addIn?movieId=${movie.id}" data-trigger="modal" data-title="选择影集">加入影集</a>
+   		<ul>
+          <c:forEach items="${movieSets}" var="movieSet">
+          <li>${movieSet.title}</li>
+          </c:forEach>
+        </ul>
       </div>
       </div>
     </div>

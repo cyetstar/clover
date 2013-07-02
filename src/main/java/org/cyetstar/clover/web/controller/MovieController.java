@@ -18,9 +18,11 @@ import org.cyetstar.clover.entity.MovieCredit;
 import org.cyetstar.clover.entity.MovieFile;
 import org.cyetstar.clover.entity.MovieGenre;
 import org.cyetstar.clover.entity.MovieLanguage;
+import org.cyetstar.clover.entity.MovieSet;
 import org.cyetstar.clover.service.DictionaryService;
 import org.cyetstar.clover.service.MovieFileService;
 import org.cyetstar.clover.service.MovieService;
+import org.cyetstar.clover.service.MovieSetService;
 import org.cyetstar.clover.service.PosterService;
 import org.cyetstar.clover.web.JSONResponse;
 import org.cyetstar.core.domain.Clause;
@@ -56,6 +58,9 @@ public class MovieController {
 	MovieFileService fileService;
 
 	@Autowired
+	MovieSetService movieSetService;
+
+	@Autowired
 	PosterService posterService;
 
 	@Autowired
@@ -81,8 +86,10 @@ public class MovieController {
 						"casts.celebrity"), new Fetch("writers.celebrity"));
 		Movie movie = movieService.findMovie(spec);
 		List<MovieFile> files = fileService.findFilesByMovieId(id);
+		List<MovieSet> movieSets = movieSetService.findSetsByMovieId(id);
 		model.addAttribute("movie", movie);
 		model.addAttribute("files", files);
+		model.addAttribute("movieSets", movieSets);
 		model.addAttribute("smallAccessPath", posterService.getSmallAccessPath());
 		return "movies/show";
 	}

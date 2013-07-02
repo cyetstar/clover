@@ -181,9 +181,32 @@
 #file-list li:hover a {
   display: block;
 }
-
-#add-file{
-  margin:10px 0;
+#addin{
+}
+#addin .scroll{
+  margin:20px 0;
+  padding:20px;
+  max-height:400px;
+  overflow: auto;
+}
+#addin ul{
+  list-style: none;
+  margin:0 10px 10px 10px;
+}
+#addin ul > li {
+ margin-bottom:5px;
+}
+#addin ul > li .heading{
+ padding:5px;
+ width:450px;
+ overflow: hidden;
+ white-space:nowrap;
+ text-overflow:ellipsis;
+ display: block;
+}
+#addin ul > li > p{
+  background-color: #fafafa;
+   padding:5px;
 }
 
 /********通用*******/
