@@ -2,8 +2,6 @@ package org.cyetstar.clover.repository;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -19,8 +17,7 @@ public class MovieSetTest extends AbstractTransactionalJUnit4SpringContextTests 
 
 	@Test
 	public void find() {
-		Pageable pageable = new PageRequest(1, 10);
-		movieSetDao.findUnAddInSets(1L, pageable);
+		movieSetDao.findAddInSets(1L);
 	}
 
 }

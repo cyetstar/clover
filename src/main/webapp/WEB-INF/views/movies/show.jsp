@@ -119,21 +119,20 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="javascript:">新增</a></li>
-              <li><a href="javascript:">编辑</a></li>
-              <li><a href="javascript:">删除</a></li>
+              <li><a href="${ctx}/movies/add">新增</a></li>
+              <li><a href="${ctx}/movies/edit/${movie.id}">编辑</a></li>
+              <li><a href="javascript:;" id="delete-movie">删除</a></li>
             </ul>
           </div>
         </div>
         <p id="show-article">${movie.summary}</p>
         <div id="show-files" class="clearfix">
-          <h5>电影文件</h5>
-          <a href="${ctx}/movieFiles/add?movieId=${movie.id}" data-trigger="modal" data-title="添加电影文件信息" id="add-file">添加文件</a>
-          <ul id="file-list">
+          <h5>电影文件<small class="pull-right"><a href="${ctx}/movieFiles/add?movieId=${movie.id}" data-trigger="modal" data-title="添加电影文件信息" id="add-file">添加文件</a></small></h5>
+          <ul id="files">
             <c:forEach items="${files}" var="file">
               <li class="clearfix" data-file-id="${file.id}">
               <span>${file.filename}</span> 
-              <a href="javascript:" class="delete btn btn-mini btn-danger">删除</a> 
+              <a href="javascript:" class="delete-file btn btn-mini btn-danger">删除</a> 
               <a href="${ctx}/movieFiles/edit/${file.id}" data-trigger="modal" data-title="修改电影文件信息" class="edit btn btn-mini">修改</a>
               </li>
             </c:forEach>
@@ -142,11 +141,10 @@
       </div>
       <div class="span3">
       <div>
-      	<h5>影集</h5>
-        <a href="${ctx}/movieSets/addIn?movieId=${movie.id}" data-trigger="modal" data-title="选择影集">加入影集</a>
-   		<ul>
+      	<h5>影集<small class="pull-right"><a href="${ctx}/movieSets/addIn?movieId=${movie.id}" data-trigger="modal" data-title="选择影集">加入影集</a></small></h5>
+   		<ul id="sets">
           <c:forEach items="${movieSets}" var="movieSet">
-          <li>${movieSet.title}</li>
+          <li><span class="heading"><a href="#" title="${movieSet.title}">${movieSet.title}</a></span></li>
           </c:forEach>
         </ul>
       </div>
@@ -154,6 +152,10 @@
     </div>
   </div>
 <script type="text/javascript">
+$('#delete-movie').on('click', function(){
+	var $form = $('<form/>', {method: 'post', action: '${ctx}/movies/delete/${movie.id}'});
+	$form.submit();
+})
 $('#rating').hover(function(){
 	$('.icon-refresh').removeClass('hide');
 }, function(){
@@ -175,7 +177,7 @@ $('.icon-refresh').on('click', function(){
 	
 })
 
-$('#file-list').on('click', '.delete', function(){
+$('#files').on('click', '.delete-file', function(){
 	var self = this;
 	var $li = $(self).closest('li');
 	var id = $li.attr('data-file-id');

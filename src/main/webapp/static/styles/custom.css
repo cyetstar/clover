@@ -63,8 +63,7 @@
 }
 
 #show-detail {
-  margin-bottom: 20px;
-  position: relative;
+  margin-bottom: 20px; position: relative;
 }
 
 #show-poster {
@@ -75,8 +74,8 @@
   width: 120px; height: 160px;
 }
 
-#poster-bottom{
-  margin-top:10px;
+#poster-bottom {
+  margin-top: 10px;
 }
 
 #show-detail .dl-horizontal dt {
@@ -87,10 +86,8 @@
   margin-left: 110px;
 }
 
-#show-detail .btn-group{
-  position: absolute;
-  right: 0;
-  bottom: 20px;
+#show-detail .btn-group {
+  position: absolute; right: 0; bottom: 20px;
 }
 
 #show-article {
@@ -132,13 +129,17 @@
 .controls+.controls {
   margin-top: 5px;
 }
+.help-inline b{
+  cursor: pointer;
+  font-size:14px;
+}
 /**********海报上传**********/
 #file-control {
   position: relative; overflow: hidden;
 }
 
 #file-control .file {
-  height: 36px; overflow: hidden; position: absolute; left: 0; top: 0; opacity: 0; filter: alpha(opacity =   0); cursor: pointer; direction: ltr;
+  height: 36px; overflow: hidden; position: absolute; left: 0; top: 0; opacity: 0; filter: alpha(opacity =         0); cursor: pointer; direction: ltr;
 }
 
 #crop-area .origin,#crop-area .preview {
@@ -154,59 +155,114 @@
 }
 
 /****************/
-#file-list {
+h5 small {
+  line-height: 20px;
+}
+
+#files {
   list-style: none; margin: 0;
 }
 
-#file-list li {
-  line-height: 40px; padding: 0 10px;
+#files li {
+  line-height: 30px;
 }
 
-#file-list li:hover {
-  background-color: #f9f9f9;
-}
-
-#file-list li span {
+#files li span {
   float: left;
 }
 
-#file-list li a {
-  float: right; display: none; margin: 9px 10px 0 0;
+#files li a {
+  float: right; display: none; margin: 4px 10px 0 0;
 }
 
-#file-list li .delete {
+#files li .delete {
   margin-right: 0;
 }
 
-#file-list li:hover a {
+#files li:hover a {
   display: block;
 }
-#addin{
+
+#new-file,#edit-file {
+  padding: 0 20px;
 }
-#addin .scroll{
-  margin:20px 0;
-  padding:20px;
-  max-height:400px;
-  overflow: auto;
+#new-file input[type="text"],#edit-file input[type="text"]{
+  width: 300px;
 }
-#addin ul{
-  list-style: none;
-  margin:0 10px 10px 10px;
+/************/
+#sets {
+  list-style: none; margin: 0;
 }
-#addin ul > li {
- margin-bottom:5px;
+
+#sets>li {
+  line-height: 25px;
 }
-#addin ul > li .heading{
- padding:5px;
- width:450px;
- overflow: hidden;
- white-space:nowrap;
- text-overflow:ellipsis;
- display: block;
+
+#sets>li .heading {
+  width: 230px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block;
 }
-#addin ul > li > p{
-  background-color: #fafafa;
-   padding:5px;
+
+.modal-box {
+  padding: 10px 0;
+}
+
+.modal-box .nav {
+  margin: 0 20px;
+}
+
+#select-set {
+  list-style: none; margin: 10px 0; max-height: 200px; overflow: auto; padding: 0 20px;
+}
+
+#select-set>li {
+  padding: 5px 0;
+}
+
+#select-set>li .heading {
+  width: 480px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block;
+}
+
+#setting {
+  padding: 0 20px;
+}
+
+#setting>div {
+  margin: 10px 0;
+}
+
+#setting .extra {
+  display: none;
+}
+
+#setting .extra textarea {
+  width: 300px; height: 60px; margin-bottom: 0;
+}
+
+#setting.open .extra {
+  display: block;
+}
+
+#setting a .caret {
+  margin-top: 8px; margin-left: 2px;;
+}
+
+#setting.open a .caret {
+  border-top: 0; border-bottom: 4px solid #000000;
+}
+
+#new-set {
+  padding: 10px 20px 0;
+}
+
+#new-set input[type="text"] {
+  width: 300px;
+}
+
+#new-set textarea {
+  width: 300px; height: 60px;
 }
 
 /********通用*******/
+.modal-header h3 {
+  font-size: 16px; font-weight: normal;
+}

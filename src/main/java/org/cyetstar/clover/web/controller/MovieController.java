@@ -86,7 +86,7 @@ public class MovieController {
 						"casts.celebrity"), new Fetch("writers.celebrity"));
 		Movie movie = movieService.findMovie(spec);
 		List<MovieFile> files = fileService.findFilesByMovieId(id);
-		List<MovieSet> movieSets = movieSetService.findSetsByMovieId(id);
+		List<MovieSet> movieSets = movieSetService.findAddInSets(id);
 		model.addAttribute("movie", movie);
 		model.addAttribute("files", files);
 		model.addAttribute("movieSets", movieSets);

@@ -3,11 +3,10 @@ package org.cyetstar.clover.service;
 import java.util.List;
 
 import org.cyetstar.clover.entity.MovieSet;
+import org.cyetstar.clover.entity.MovieSetItem;
 import org.cyetstar.clover.repository.MovieSetDao;
+import org.cyetstar.clover.repository.MovieSetItemDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,17 +17,23 @@ public class MovieSetService {
 	@Autowired
 	MovieSetDao setDao;
 
-	public Page<MovieSet> findUnAddInSets(Long movieId, int pageNum, int pageSize) {
-		Pageable pageable = new PageRequest(pageNum, pageSize);
-		return setDao.findUnAddInSets(movieId, pageable);
+	@Autowired
+	MovieSetItemDao itemDao;
+
+	public List<MovieSet> findUnAddInSets(Long movieId) {
+		return setDao.findUnAddInSets(movieId);
 	}
 
-	public List<MovieSet> findSetsByMovieId(Long movieId) {
+	public List<MovieSet> findAddInSets(Long movieId) {
 		return setDao.findAddInSets(movieId);
 	}
 
-	public MovieSet saveMovieSet(MovieSet movieSet) {
-		return setDao.save(movieSet);
+	public MovieSet saveMovieSet(MovieSet set) {
+		return setDao.save(set);
+	}
+
+	public void saveMovieSetItem(MovieSetItem item) {
+		itemDao.save(item);
 	}
 
 }

@@ -33,7 +33,7 @@
 						<div class="controls">
 							<input type="hidden" name="akaId"> 
 							<input type="text" name="akaTitle">
-							<span class="help-inline sign-help-inline">
+							<span class="help-inline">
 								<b class="plus" title="添加更多">&#43;</b>
 							</span>
 						</div>
@@ -42,7 +42,7 @@
 						<div class="controls">
 							<input type="hidden" name="akaId" value="${aka.id}"> 
 							<input type="text" name="akaTitle" value="${aka.title}">
-							<span class="help-inline sign-help-inline">
+							<span class="help-inline">
 								<c:if test="${st.first}">
 									<b class="plus" title="添加更多">&#43;</b>
 								</c:if>
@@ -66,7 +66,7 @@
 							<input type="hidden" name="directorId"> 
 							<input type="hidden" name="directorCelebrityId"> 
 							<input type="text" name="directorName" class="typeahead" autocomplete="off"> 
-							<span class="help-inline sign-help-inline">
+							<span class="help-inline">
 								<b class="plus" title="添加更多">&#43;</b>
 							</span>
 						</div>
@@ -76,7 +76,7 @@
 							<input type="hidden" name="directorId" value="${director.id}">
 							<input type="hidden" name="directorCelebrityId" value="${director.celebrity.id}"> 
 							<input type="text" name="directorName" value="${director.celebrity.name}" class="typeahead" autocomplete="off"> 
-							<span class="help-inline sign-help-inline"> 
+							<span class="help-inline"> 
 								<c:if test="${st.first}">
 									<b class="plus" title="添加更多">&#43;</b>
 								</c:if> <c:if test="${!st.first}">
@@ -93,7 +93,7 @@
 							<input type="hidden" name="writerId"> 
 							<input type="hidden" name="writerCelebrityId"> 
 							<input type="text" name="writerName" class="typeahead" autocomplete="off"> 
-							<span class="help-inline sign-help-inline">
+							<span class="help-inline">
 								<b class="plus" title="添加更多">&#43;</b>
 							</span>
 						</div>
@@ -103,7 +103,7 @@
 							<input type="hidden" name="writerId" value="${writer.id}"> 
 							<input type="hidden" name="writerCelebrityId" value="${writer.celebrity.id}"> 
 							<input type="text" name="writerName" value="${writer.celebrity.name}" class="typeahead"autocomplete="off">
-							<span class="help-inline sign-help-inline"> 
+							<span class="help-inline"> 
 								<c:if test="${st.first}">
 									<b class="plus" title="添加更多">&#43;</b>
 								</c:if> <c:if test="${!st.first}">
@@ -120,7 +120,7 @@
 							<input type="hidden" name="castId"> 
 							<input type="hidden" name="castCelebrityId"> 
 							<input type="text" name="castName" class="typeahead" autocomplete="off"> 
-							<span class="help-inline sign-help-inline">
+							<span class="help-inline">
 								<b class="plus" title="添加更多">&#43;</b>
 							</span>
 						</div>
@@ -130,7 +130,7 @@
 							<input type="hidden" name="castId" value="${cast.id}"> 
 							<input type="hidden" name="castCelebrityId" value="${cast.celebrity.id}"> 
 							<input type="text" name="castName" value="${cast.celebrity.name}" class="typeahead"	autocomplete="off"> 
-							<span class="help-inline sign-help-inline"> 
+							<span class="help-inline"> 
 								<c:if test="${st.first}">
 									<b class="plus" title="添加更多">&#43;</b>
 								</c:if> <c:if test="${!st.first}">
@@ -239,7 +239,7 @@
 		$(function(){
 			$('.plus').on('click', function(){
 				var $clone = $(this).closest('.control-group').find('.controls').last().clone();
-				$clone.find(':input').val('').end().find('.sign-help-inline').html('<b class="minus">&minus;</b>');
+				$clone.find(':input').val('').end().find('.help-inline').html('<b class="minus">&minus;</b>');
 				$clone.find('.typeahead').typeahead(options);
 				$(this).closest('.control-group').append($clone);
 			})

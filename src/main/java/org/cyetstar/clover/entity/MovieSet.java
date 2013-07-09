@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 
 @Entity
@@ -43,6 +44,7 @@ public class MovieSet extends IdEntity {
 		this.summary = summary;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "set", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
 	public List<MovieSetItem> getItems() {
 		return items;

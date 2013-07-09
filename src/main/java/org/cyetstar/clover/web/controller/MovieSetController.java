@@ -1,11 +1,13 @@
 package org.cyetstar.clover.web.controller;
 
+import java.util.List;
+
 import org.cyetstar.clover.entity.MovieSet;
+import org.cyetstar.clover.entity.MovieSetItem;
 import org.cyetstar.clover.service.MovieSetService;
 import org.cyetstar.clover.web.JSONResponse;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,18 +23,27 @@ public class MovieSetController {
 	@Autowired
 	MovieSetService movieSetService;
 
-	@RequestMapping("/addIn")
-	public String addIn(@RequestParam Long movieId, @RequestParam(defaultValue = "0") Integer pageNum, Model model) {
-		Page<MovieSet> page = movieSetService.findUnAddInSets(movieId, 1, 5);
+	@RequestMapping(value = "/addIn", method = RequestMethod.GET)
+	public String addIn(@RequestParam Long movieId, Model model) {
+		List<MovieSet> list = movieSetService.findUnAddInSets(movieId);
 		model.addAttribute("movieId", movieId);
-		model.addAttribute("page", page);
+		model.addAttribute("list", list);
 		return "movieSets/addIn";
 	}
 
-	@RequestMapping("/add")
-	public String add(@RequestParam Long movieId, Model model) {
-		model.addAttribute("movieId", movieId);
-		return "movieSets/add";
+	@RequestMapping(value = "/addIn", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONResponse addIn(MovieSetItem movieSetItem, Model model) {
+		JSONResponse response = new JSONResponse();
+		try {
+			movieSetItem.setCreatedAt(DateTime.now());
+			movieSetItem.setIdx((int) (movieSetItem.getCreatedAt().getMillis() / 1000));
+			movieSetService.saveMovieSetItem(movieSetItem);
+			response.setSuccess(true);
+		} catch (Exception e) {
+			response.setSuccess(false);
+		}
+		return response;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -43,6 +54,7 @@ public class MovieSetController {
 			movieSet.setCreatedAt(DateTime.now());
 			movieSetService.saveMovieSet(movieSet);
 			response.setSuccess(true);
+			response.setData(movieSet);
 		} catch (Exception e) {
 			response.setSuccess(false);
 		}

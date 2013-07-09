@@ -7,21 +7,18 @@
 <script src="${ctx}/static/sco.js/sco.modal.js" type="text/javascript"></script>
 </head>
 <body>
-	<form id="save-file-form" class="form-horizontal form-modal">
-		<div class="control-group">
-			<label class="control-label" for="filename">文件名</label>
-			<div class="controls">
-                <input type="hidden" name="id" value="${file.id}">
-				<input type="text" name="filename" value="${file.filename}">
-			</div>
-		</div>
-	</form>
-	<div class="modal-footer">
-		<a href="javascript:" class="btn" data-dismiss="modal">关闭</a> 
-		<a href="javascript:" class="btn btn-primary btn-save">保存</a>
-	</div>
-	<script type="text/javascript">
-	$('.modal-footer .btn-save').on('click',function(){
+  <div class="modal-box">
+    <form id="edit-file">
+      <input type="hidden" name="id" value="${file.id}"> 
+      <label class="control-label" for="filename"> 
+      <input type="text" name="filename" value="${file.filename}">
+      </label>
+      <button id="edit-file-btn" class="btn btn-primary btn-save">保存</button>
+      <button class="btn" data-dismiss="modal">关闭</button>
+    </form>
+  </div>
+<script type="text/javascript">
+	$('#edit-file-btn').on('click',function(){
 		$.ajax({
 			url: '${ctx}/movieFiles/update',
 			type: 'post',
@@ -29,16 +26,13 @@
 			data: $('form').serialize(),
 			success: function(jsondata){
 				if(jsondata.success){
-					$('#file-list').find('[data-file-id="' + jsondata.data.id + '"]').find('span').text(jsondata.data.filename);
+					$('#files').find('[data-file-id="' + jsondata.data.id + '"]').find('span').text(jsondata.data.filename);
 					$.scojs_modal().close();
-				}else{
-					
 				}
 			}
 		})
 	})
-	</script>
-	
+</script>
 </body>
 </html>
 

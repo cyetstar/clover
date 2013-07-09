@@ -7,21 +7,19 @@
 <script src="${ctx}/static/sco.js/sco.modal.js" type="text/javascript"></script>
 </head>
 <body>
-	<form id="save-file-form" class="form-horizontal form-modal">
-		<div class="control-group">
-			<label class="control-label" for="filename">文件名</label>
-			<div class="controls">
-                <input type="hidden" name="movieId" value="${movieId}">
-				<input type="text" id="filename" name="filename">
-			</div>
-		</div>
-	</form>
-	<div class="modal-footer">
-		<a href="javascript:" class="btn" data-dismiss="modal">关闭</a> 
-		<a href="javascript:" class="btn btn-primary btn-save">保存</a>
-	</div>
-	<script type="text/javascript">
-	$('.modal-footer .btn-save').on('click',function(){
+  <div class="modal-box">
+    <form id="new-file">
+      <input type="hidden" name="movieId" value="${movieId}"> 
+      <label for="filename"> 
+        <input type="text" id="filename" name="filename" placeholder="文件名">
+      </label>
+      <button id="new-file-btn" class="btn btn-primary btn-save">保存</button>
+      <button class="btn" data-dismiss="modal">关闭</button>
+    </form>
+  </div>
+
+  <script type="text/javascript">
+	$('#new-file-btn').on('click',function(){
 		$.ajax({
 			url: '${ctx}/movieFiles/create',
 			type: 'post',
@@ -33,16 +31,16 @@
 					$li.append('<span>' + jsondata.data.filename + '</span>');
 					$li.append('<a href="javascript:" class="delete btn btn-mini btn-danger">删除</a>');
 					$li.append('<a href="${ctx}/movieFiles/edit/' + jsondata.data.id + '" data-trigger="modal" data-title="修改电影文件信息" class="edit btn btn-mini">修改</a>')
-					$('#file-list').prepend($li);
+					$('#files').prepend($li);
 					$.scojs_modal().close();
 				}else{
 					
 				}
 			}
 		})
+		return false;
 	})
 	</script>
-	
 </body>
 </html>
 

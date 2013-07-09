@@ -3,16 +3,14 @@ package org.cyetstar.clover.repository;
 import java.util.List;
 
 import org.cyetstar.clover.entity.MovieSet;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 
 public interface MovieSetDao extends JpaSpecRepository<MovieSet, Long> {
 
-	@Query("select s from MovieSet as s left join s.items as i with i.movie.id <> ?")
-	public Page<MovieSet> findUnAddInSets(Long movieId, Pageable pageable);
+	@Query("from MovieSet a where not exists (from a.items b where b.movie.id = ?) order by a.createdAt desc")
+	public List<MovieSet> findUnAddInSets(Long movieId);
 
-	@Query("select s from MovieSet as s join s.items as i with i.movie.id = ?")
+	@Query("select a from MovieSet a join a.items b with b.movie.id = ? order by b.createdAt desc")
 	public List<MovieSet> findAddInSets(Long movieId);
 
 }
