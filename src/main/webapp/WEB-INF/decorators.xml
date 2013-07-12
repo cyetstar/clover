@@ -6,8 +6,7 @@
 		
 		<pattern>/movieFiles/add*</pattern>
 		<pattern>/movieFiles/edit*</pattern>
-		<pattern>/movieSets/add*</pattern>
-		<pattern>/movieSets/addIn*</pattern>
+		<pattern>/movieSetItems/add*</pattern>
 	</excludes>
 	
 	<decorator name="default" page="default.jsp">

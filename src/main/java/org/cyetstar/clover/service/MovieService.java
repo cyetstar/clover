@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.cyetstar.clover.entity.Celebrity;
 import org.cyetstar.clover.entity.Movie;
@@ -74,17 +75,17 @@ public class MovieService {
 	DoubanRequestClient doubanRequestClient;
 
 	@Transactional(readOnly = true)
-	public Page<Movie> findMovie(String key, int pageNum, int pageSize, String sort) {
+	public Page<Movie> findMovie(String keyword, int pageNum, int pageSize, String sort) {
 		Pageable pageable = new PageRequest(pageNum, pageSize, DataDomainHelper.parseSort(sort.split(",")));
-		if (key != null) {
+		if (!StringUtils.isEmpty(keyword)) {
 			Movie movie = null;
-			if (Strings.isInteger(key)) {
-				movie = movieDao.findByDoubanId(key);
-			} else if (key.startsWith(Movie.IMDB_PREFIX)) {
-				movie = movieDao.findByImdb(key);
+			if (Strings.isInteger(keyword)) {
+				movie = movieDao.findByDoubanId(keyword);
+			} else if (keyword.startsWith(Movie.IMDB_PREFIX)) {
+				movie = movieDao.findByImdb(keyword);
 			} else {
-				Specification<Movie> spec = SpecificationCreater.searchByWith(Clause.instance().like("title", key)
-						.like("akas.title", key).disjunction());
+				Specification<Movie> spec = SpecificationCreater.searchByWith(Clause.instance().like("title", keyword)
+						.like("akas.title", keyword).disjunction());
 				return movieDao.findAll(spec, pageable);
 			}
 			return DataDomainHelper.PageWrapper(movie, pageable);

@@ -22,6 +22,7 @@
 </head>
 
 <body>
+${status}
 <% Exception e = (Exception)request.getAttribute("exception"); %>  
 <h2>Exception: <%= e.getMessage()%></h2>  
 <p>  

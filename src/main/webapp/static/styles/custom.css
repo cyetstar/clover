@@ -154,7 +154,7 @@
   width: 120px; overflow: hidden;
 }
 
-/****************/
+/******** 电影文件 ********/
 h5 small {
   line-height: 20px;
 }
@@ -183,13 +183,7 @@ h5 small {
   display: block;
 }
 
-#new-file,#edit-file {
-  padding: 0 20px;
-}
-#new-file input[type="text"],#edit-file input[type="text"]{
-  width: 300px;
-}
-/************/
+/****** 影集 ******/
 #sets {
   list-style: none; margin: 0;
 }
@@ -200,14 +194,6 @@ h5 small {
 
 #sets>li .heading {
   width: 230px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block;
-}
-
-.modal-box {
-  padding: 10px 0;
-}
-
-.modal-box .nav {
-  margin: 0 20px;
 }
 
 #select-set {
@@ -222,20 +208,12 @@ h5 small {
   width: 480px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block;
 }
 
-#setting {
-  padding: 0 20px;
-}
-
-#setting>div {
+#setting form>div {
   margin: 10px 0;
 }
 
 #setting .extra {
   display: none;
-}
-
-#setting .extra textarea {
-  width: 300px; height: 60px; margin-bottom: 0;
 }
 
 #setting.open .extra {
@@ -250,19 +228,27 @@ h5 small {
   border-top: 0; border-bottom: 4px solid #000000;
 }
 
-#new-set {
-  padding: 10px 20px 0;
-}
-
-#new-set input[type="text"] {
-  width: 300px;
-}
-
-#new-set textarea {
-  width: 300px; height: 60px;
-}
-
 /********通用*******/
 .modal-header h3 {
   font-size: 16px; font-weight: normal;
+}
+
+.modal-box {
+  padding: 10px 0;
+}
+
+.modal-box .nav {
+  margin: 0 20px;
+}
+
+.modal-box form{
+  padding: 10px 20px 0;
+}
+
+.modal-box form input[type="text"]{
+   width: 300px;
+}
+
+.modal-box form textarea{
+  width: 300px; height: 60px;
 }

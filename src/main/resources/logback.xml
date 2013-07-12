@@ -9,13 +9,13 @@
 	<!-- project default level -->
 	<logger name="org.cyetstar.clover" level="DEBUG" />
 	
-	<logger name="org.springframework.web.client.RestTemplate" level="DEBUG"></logger>
+	<logger name="org.springframework.web.client.RestTemplate" level="DEBUG"/>
 	
 	<!--log4jdbc -->
 	<logger name="jdbc.sqltiming" level="INFO" />
 	
 	<!-- spring mvc request mapping -->
-	<logger name="org.springframework.web.servlet.mvc.method.annotation" level="INFO" />
+	<!-- <logger name="org.springframework.web" level="DEBUG" />  -->
 	
 	<!--
 	<logger name="org.apache.ibatis" level="DEBUG" />

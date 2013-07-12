@@ -141,7 +141,7 @@
       </div>
       <div class="span3">
       <div>
-      	<h5>影集<small class="pull-right"><a href="${ctx}/movieSets/addIn?movieId=${movie.id}" data-trigger="modal" data-title="选择影集">加入影集</a></small></h5>
+      	<h5>影集<small class="pull-right"><a href="${ctx}/movieSetItems/add?movieId=${movie.id}" data-trigger="modal" data-title="选择影集">加入影集</a></small></h5>
    		<ul id="sets">
           <c:forEach items="${movieSets}" var="movieSet">
           <li><span class="heading"><a href="#" title="${movieSet.title}">${movieSet.title}</a></span></li>
@@ -182,11 +182,10 @@ $('#files').on('click', '.delete-file', function(){
 	var $li = $(self).closest('li');
 	var id = $li.attr('data-file-id');
 	$.ajax({
-		url:'${ctx}/movieFiles/delete/' + id,
+		url:'${ctx}/movieFiles/delete/' + id + '.json',
 		type:'post',
-		dataType:'json',
 		success:function(jsondata){
-			if(jsondata.success){
+			if(jsondata.status){
 				$li.slideUp('slow', function(){
 					$(this).remove();
 				});

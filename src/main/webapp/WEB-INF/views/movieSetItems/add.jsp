@@ -13,38 +13,39 @@
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="list">
-        <form>
-          <input type="hidden" name="movie.id" value="${movieId}"/>
           <ul id="select-set">
             <c:forEach items="${list}" var="movieSet">
               <li>
               <label class="radio"> 
-              <input type="radio" name="set.id" value="${movieSet.id}" /><span class="heading">${movieSet.title}</span>
+              <input type="radio" name="setId" value="${movieSet.id}" /><span class="heading">${movieSet.title}</span>
               </label>
               </li>
             </c:forEach>
           </ul>
           <div id="setting">
-            <a href="javascript:;">编写备注<b class="caret"></b></a>
-            <div class="extra">
-             <textarea id="comment" name="comment" placeholder="备注"></textarea>
-            </div>
-            <div>
-              <button id="new-item-btn" class="btn btn-primary">保存</button>
-              <button class="btn" data-dismiss="modal">关闭</button> 
-            </div>
+            <form>
+              <a href="javascript:;">编写备注<b class="caret"></b></a>
+              <input type="hidden" name="movie.id" value="${movieId}"/>
+              <input type="hidden" name="set.id" value=""/>
+              <div class="extra">
+               <textarea id="comment" name="comment" placeholder="备注"></textarea>
+              </div>
+              <div>
+                <button id="add-item-btn" class="btn btn-primary">保存</button>
+                <button class="btn" data-dismiss="modal">关闭</button> 
+              </div>
+            </form>
           </div>
-        </form>
       </div>
       <div id="form" class="tab-pane">
-        <form id="new-set">
+        <form>
           <label for="title">
             <input type="text" id="title" name="title" placeholder="影集名">
          	</label>
           <label for="summary">
             <textarea id="summary" name="summary"  placeholder="影集介绍"></textarea>
           </label>
-          <button id="new-set-btn" class="btn btn-primary">保存</button>
+          <button id="add-set-btn" class="btn btn-primary">保存</button>
           <button class="btn" data-dismiss="modal">关闭</button> 
         </form>
       </div>
@@ -52,20 +53,23 @@
   </div>
 </body>
 <script type="text/javascript">
-	$('#setting > a').toggle(function() {
+	$('#select-set').on('click',':radio', function(){
+		$('[name="set.id"]').val($(this).val());
+	})
+	$('#setting form a').toggle(function() {
 		$('#setting').addClass('open');
 	}, function() {
 		$('#setting').removeClass('open');
 	})
-	$('#new-item-btn').on('click', function(){
+	$('#add-item-btn').on('click', function(){
+		var self = this;
 		$.ajax({
-			url: '${ctx}/movieSets/addIn',
-			data: $('#list form').serialize(),
-			dataType: 'json',
+			url: '${ctx}/movieSetItems/create.json',
+			data: $(self).closest('form').serialize(),
 			type: 'post',
 			success: function(jsondata){
-				if(jsondata.success){
-					var text = $('#list :checked').next('span').text();
+				if(jsondata.status){
+					var text = $('[name="setId"]:checked').next('span').text();
 					var $li = $('<li/>');
 					var $span = $('<span class="heading"></span>');
 					var $a = $('<a/>').attr('href', '#').attr('title', text).text(text);
@@ -78,16 +82,16 @@
 		return false;
 	})
 	
-	$('#new-set-btn').on('click', function(){
+	$('#add-set-btn').on('click', function(){
+		var self = this;
 		$.ajax({
-			url: '${ctx}/movieSets/create',
-			data: $('#form form').serialize(),
-			dataType: 'json',
+			url: '${ctx}/movieSets/create.json',
+			data: $(self).closest('form').serialize(),
 			type: 'post',
 			success: function(jsondata){
-				if(jsondata.success){
-					var $input = $('<input type="radio" name="set.id"/>').val(jsondata.data.id).attr('checked', true);
-					var $span = $('<span class="heading"/>').text(jsondata.data.title);
+				if(jsondata.status){
+					var $input = $('<input type="radio" name="set.id"/>').val(jsondata.movieSet.id).attr('checked', true);
+					var $span = $('<span class="heading"/>').text(jsondata.movieSet.title);
 					var $label = $('<label class="radio"></label>').append($input).append($span);
 					$('<li></li>').prependTo('#list ul').append($label);
 					$('#for-list').tab('show');

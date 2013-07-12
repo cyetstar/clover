@@ -76,7 +76,7 @@ public class MovieController {
 		Map<String, String> map = Maps.newHashMap();
 		map.put("keywords", keywords);
 		model.addAttribute("params", map);
-		return "movies/list";
+		return "/movies/list";
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -85,19 +85,19 @@ public class MovieController {
 				new Fetch("akas"), new Fetch("countries"), new Fetch("languages"), new Fetch("directors.celebrity"), new Fetch(
 						"casts.celebrity"), new Fetch("writers.celebrity"));
 		Movie movie = movieService.findMovie(spec);
-		List<MovieFile> files = fileService.findFilesByMovieId(id);
+		List<MovieFile> files = fileService.findByMovieId(id);
 		List<MovieSet> movieSets = movieSetService.findAddInSets(id);
 		model.addAttribute("movie", movie);
 		model.addAttribute("files", files);
 		model.addAttribute("movieSets", movieSets);
 		model.addAttribute("smallAccessPath", posterService.getSmallAccessPath());
-		return "movies/show";
+		return "/movies/show";
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String add(Model model) {
 		getAllDict(model);
-		return "movies/add";
+		return "/movies/add";
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -114,7 +114,7 @@ public class MovieController {
 		Movie movie = movieService.findMovie(spec);
 		model.addAttribute("movie", movie);
 		getAllDict(model);
-		return "movies/edit";
+		return "/movies/edit";
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -144,7 +144,7 @@ public class MovieController {
 	public String uploadPoster(@PathVariable Long id, Model model) {
 		Movie movie = movieService.findMovie(id);
 		model.addAttribute("movie", movie);
-		return "movies/uploadPoster";
+		return "/movies/uploadPoster";
 	}
 
 	@RequestMapping(value = "/uploadPoster/{id}", method = RequestMethod.POST)
@@ -158,7 +158,7 @@ public class MovieController {
 			model.addAttribute("smallAccessPath", posterService.getOriginAccessPath());
 			model.addAttribute("movie", movie);
 		}
-		return "movies/uploadPoster";
+		return "/movies/uploadPoster";
 	}
 
 	@RequestMapping(value = "/cropPoster/{id}")

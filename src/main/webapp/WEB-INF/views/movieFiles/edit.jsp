@@ -3,15 +3,12 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <html>
-<head>
-<script src="${ctx}/static/sco.js/sco.modal.js" type="text/javascript"></script>
-</head>
 <body>
   <div class="modal-box">
-    <form id="edit-file">
-      <input type="hidden" name="id" value="${file.id}"> 
+    <form>
+      <input type="hidden" name="id" value="${movieFile.id}"> 
       <label class="control-label" for="filename"> 
-      <input type="text" name="filename" value="${file.filename}">
+      <input type="text" name="filename" value="${movieFile.filename}">
       </label>
       <button id="edit-file-btn" class="btn btn-primary btn-save">保存</button>
       <button class="btn" data-dismiss="modal">关闭</button>
@@ -19,18 +16,19 @@
   </div>
 <script type="text/javascript">
 	$('#edit-file-btn').on('click',function(){
+		var self = this;
 		$.ajax({
-			url: '${ctx}/movieFiles/update',
+			url: '${ctx}/movieFiles/update.json',
 			type: 'post',
-			dataType: 'json',
-			data: $('form').serialize(),
+			data: $(self).closest('form').serialize(),
 			success: function(jsondata){
-				if(jsondata.success){
-					$('#files').find('[data-file-id="' + jsondata.data.id + '"]').find('span').text(jsondata.data.filename);
+				if(jsondata.status){
+					$('#files').find('[data-file-id="' + jsondata.movieFile.id + '"]').find('span').text(jsondata.movieFile.filename);
 					$.scojs_modal().close();
 				}
 			}
 		})
+		return false;
 	})
 </script>
 </body>
